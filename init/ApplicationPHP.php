@@ -1,13 +1,5 @@
 <?php
 
-/**
- * Created by PhpStorm.
- * User: RavTecnologia
- * Date: 23/05/2017
- * Time: 13:08
- */
-require_once('classes.php/HttpRequest.php');
-
 class ApplicationPHP
 {
     static $instance = null;
