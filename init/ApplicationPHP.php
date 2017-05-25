@@ -1,5 +1,15 @@
 <?php
 
+function __autoload( $class ){
+    if(file_exists('classes.php/'. $class .'.php')){
+        require_once('classes.php/' . $class . '.php');
+    }
+
+    if(file_exists('controller/'. $class .'.php')) {
+        require_once('controller/' . $class . '.php');
+    }
+}
+
 class ApplicationPHP
 {
     static $instance = null;
