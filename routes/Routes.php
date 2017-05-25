@@ -1,23 +1,15 @@
 <?php
 
-function __autoload( $class ){
-    if(file_exists('controller/'. $class .'.php')) {
-        require_once('controller/' . $class . '.php');
-    }
-
-    if(file_exists('classes.php/'. $class .'.php')){
-        require_once('classes.php/' . $class . '.php');
-    }
-}
-
 class Routes
 {
-    static function routeRedirect(){
-        $httpRequest = new HttpRequest();
+    static function routeRedirect( $http = null ){
+        $httpRequest = $http;
         $classe = null;
 
-        if($httpRequest->getController()!= null){
-            $classe = $httpRequest->getController()."Controller";
+        if($http!=null){
+            if($httpRequest->getController()!= null){
+                $classe = $httpRequest->getController()."Controller";
+            }
         }
         try{
             if($classe != null){
@@ -28,7 +20,7 @@ class Routes
                     if(method_exists($instance, $metodo)){
                         $instance->$metodo();
                     }else{
-                        throw new Exception("Metodo ".$metodo." nao existe na classe ". $classe );
+                        throw new Exception("Metodo <b>".$metodo."</b> nao existe na classe <b>". $classe . "</b>" );
                     }
                 }
             }

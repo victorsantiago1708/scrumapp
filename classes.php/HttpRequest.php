@@ -10,16 +10,15 @@ class HttpRequest {
 
     public function __construct(){
         self::$request = explode("/", $_SERVER["REQUEST_URI"]);
-
         if(isset(self::$request[1]))
             self::$server = self::$request[1];
         if(isset(self::$request[2]))
             $this->controller = self::$request[2];
         if(isset(self::$request[3]) && self::$request[3] != "" && !is_numeric(self::$request[3])){
             $this->action = self::$request[3];
-        }else if(isset(self::$request[3]) && self::$request[3] == ""){
+        }else if(!isset(self::$request[3]) || self::$request[3] == ""){
             $this->action = "index";
-        }else if(isset(self::$request[3])){
+        }else if( (isset(self::$request[3]) && is_numeric(self::$request[3])) ){
             self::$params = ['id' => self::$request[3]];
         }
 
