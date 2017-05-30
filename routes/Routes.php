@@ -2,19 +2,17 @@
 
 class Routes
 {
-    static function routeRedirect( $http = null ){
-        $httpRequest = $http;
+    static function routeRedirect( ){
         $classe = null;
 
-        if($http!=null){
-            if($httpRequest->getController()!= null){
-                $classe = $httpRequest->getController()."Controller";
-            }
+        if(HttpRequest::$controller!= null){
+            $classe = HttpRequest::$controller."Controller";
         }
+
         try{
             if($classe != null){
                 $instance = new $classe();
-                $metodo = $httpRequest->getAction();
+                $metodo = HttpRequest::$action;
 
                 if($instance!=null){
                     if(method_exists($instance, $metodo)){

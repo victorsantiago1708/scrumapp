@@ -14,6 +14,7 @@ class ApplicationPHP
 {
     static $instance = null;
 	static $path = "";
+	static $http = null;
 	
     private function __construct(){}
 
@@ -25,6 +26,7 @@ class ApplicationPHP
     }
 
     public function runApp(){
+        self::$http = new HttpRequest();
 		self::$path = dirname($_SERVER['PHP_SELF']);
 		self::applicationcss();
 		self::applicationjs();
@@ -45,9 +47,7 @@ class ApplicationPHP
 		$uriResources = "app/assets/resources/resources.php";
 		if(file_exists($uriResources)){
 			require_once( $uriResources );
-		}else{
-
-        }
+		}
 	}
 	
 	
