@@ -1,4 +1,4 @@
 <?php 
 //Include Here the files resources
-require_once ("config/Datasource.php");
+require_once ("configuration/datasource/Datasource.php");
 ?>

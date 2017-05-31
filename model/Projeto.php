@@ -6,6 +6,7 @@ class Projeto extends Model
     private $nome = "";
     private $descricao = "";
     private $sprints = Array();
+    private $equipe = null;
     private $status = "";
     private $dataInicio = null;
     private $dataTermino = null;
@@ -22,7 +23,6 @@ class Projeto extends Model
     public static function findAll(){
         return Model::findAllModel("Projeto");
     }
-
 
     public function addSprint( $sprint ){
         array_push($this->sprints, $sprint);
@@ -182,6 +182,22 @@ class Projeto extends Model
     public function setId($id)
     {
         $this->id = $id;
+    }
+
+    /**
+     * @return null
+     */
+    public function getEquipe()
+    {
+        return $this->equipe;
+    }
+
+    /**
+     * @param null $equipe
+     */
+    public function setEquipe($equipe)
+    {
+        $this->equipe = $equipe;
     }
 
 

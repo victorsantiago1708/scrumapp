@@ -7,6 +7,8 @@ class Routes
 
         if(HttpRequest::$controller!= null){
             $classe = HttpRequest::$controller."Controller";
+        }else{
+            $classe = "HomeController";
         }
 
         try{
