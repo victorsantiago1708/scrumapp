@@ -34,19 +34,19 @@ class Projeto extends Model
         }
     }
 
-    public function save( $id = null ){
+    public function save( ){
         $sql = "";
 
         if($this->nome == "" || $this->descricao == "" || $this->status == "" || $this->dataInicio == null || $this->dataTermino == null){
             return false;
         }
 
-        if($id == null){
+        if($this->id == null){
             $sql = "Insert into projeto (nome, descricao, status, dataInicio, dataTermino) 
                       values ('{$this->nome}', '{$this->descricao}', '{$this->status}', '{$this->dataInicio}', '{$this->dataTermino}')";
         }else{
             $sql = "Update projeto set nome = '{$this->nome}', descricao = '{$this->descricao}', status = '{$this->status}', dataInicio = '{$this->dataInicio}',
-                      dataTermino = '{$this->dataTermino}' where id = {$id}";
+                      dataTermino = '{$this->dataTermino}' where id = {$this->id}";
         }
 
         $query = Datasource::getInstance()->prepare($sql);

@@ -9,18 +9,18 @@ class Sprint extends Model
     private $projetoId = null;
 
 
-    public function save( $id = null ){
+    public function save( ){
         $sql = "";
 
         if($this->nome == "" || $this->descricao == "" || $this->status == "" || $this->projetoId == null ){
             return false;
         }
 
-        if($id == null){
+        if($this->id == null){
             $sql = "Insert into sprint (nome, descricao, status, projetoId) 
                       values ('{$this->nome}', '{$this->descricao}', '{$this->status}', {$this->getProjetoId()}";
         }else{
-            $sql = "Update sprint set nome = '{$this->nome}', descricao = '{$this->descricao}', status = '{$this->status}', projetoId = {$this->getProjetoId()} where id = {$id}";
+            $sql = "Update sprint set nome = '{$this->nome}', descricao = '{$this->descricao}', status = '{$this->status}', projetoId = {$this->getProjetoId()} where id = {$this->id}";
         }
 
         $query = Datasource::getInstance()->prepare($sql);
