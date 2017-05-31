@@ -1,6 +1,6 @@
 <?php
 
-class datasource
+class Datasource
 {
     public static $instance;
 

@@ -1,6 +1,6 @@
 <?php
 
-class ProjetoController
+class ControllerAbstract
 {
     public function index(){
 
@@ -17,4 +17,5 @@ class ProjetoController
     public function edit(){
 
     }
+
 }

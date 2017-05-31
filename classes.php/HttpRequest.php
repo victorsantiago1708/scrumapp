@@ -7,9 +7,12 @@ class HttpRequest {
     static  $params = array();
     static  $controller = null;
     static  $action = null;
+    static  $httpMethod = "";
 
     public function __construct(){
+        self::$httpMethod = $_SERVER['REQUEST_METHOD'];
         self::$request = explode("/", $_SERVER["REQUEST_URI"]);
+
         if(isset(self::$request[1]))
             self::$server = self::$request[1];
         if(isset(self::$request[2]))

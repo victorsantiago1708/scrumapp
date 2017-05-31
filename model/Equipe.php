@@ -1,7 +1,7 @@
 <?php
 
 
-class Time extends Model
+class Equipe extends Model
 {
     private $id = null;
     private $nome = "";
@@ -17,10 +17,10 @@ class Time extends Model
         }
 
         if($this->id == null){
-            $sql = "Insert into time (nome, categoria) 
+            $sql = "Insert into equipe (nome, categoria) 
                       values ('{$this->nome}', '{$this->categoria}')";
         }else{
-            $sql = "Update projeto set nome = '{$this->nome}', categoria = '{$this->categoria}' where id = {$this->id}";
+            $sql = "Update equipe set nome = '{$this->nome}', categoria = '{$this->categoria}' where id = {$this->id}";
         }
 
         $query = Datasource::getInstance()->prepare($sql);
@@ -32,7 +32,7 @@ class Time extends Model
 
     public function delete(){
 
-        $sql = "DELETE FROM time WHERE id = :id";
+        $sql = "DELETE FROM equipe WHERE id = :id";
         $stmt = Datasource::getInstance()->prepare( $sql );
         $stmt->bindParam( ':id', $this->getId() );
         $result = $stmt->execute();
@@ -40,11 +40,11 @@ class Time extends Model
     }
 
     public static function get($id){
-        return Model::getModel($id, "Time");
+        return Model::getModel($id, "Equipe");
     }
 
     public static function findAll(){
-        return Model::findAllModel("Time");
+        return Model::findAllModel("Equipe");
     }
 
     /**
