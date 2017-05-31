@@ -11,7 +11,11 @@ $projetos = $this->getParams()["projetos"];
 <?php
     if(count($projetos) <= 0) {
 ?>
-        <div class="alert alert-warning"><b>Atenção!</b> Nenhum projeto foi encontrado.</div>
+        <div class="alert alert-warning"><b>Atenção!</b> Nenhum projeto foi encontrado.
+            <button class="btn btn-primary">
+                Novo projeto <i class="fa fa-cubes"></i>
+            </button>
+        </div>
 <?php
     }
     foreach ($projetos as $projeto): ?>

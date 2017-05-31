@@ -24,6 +24,11 @@ class HttpRequest {
         }else if( (isset(self::$request[3]) && is_numeric(self::$request[3])) ){
             self::$params = ['id' => self::$request[3]];
         }
+
+        if( isset($_POST) && !empty($_POST) ){
+            self::$params = $_POST;
+        }
+
         if(isset(self::$request[4]))
             self::$params = self::$request[4];
     }
