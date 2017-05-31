@@ -12,7 +12,7 @@ class View
         $this->params = $params;
     }
 
-    public function getContents()
+    private function getContents()
     {
         ob_start();
         if(isset($this->view))

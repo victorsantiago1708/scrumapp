@@ -1,20 +1,12 @@
 <?php
 
-class ProjetoController
+require_once ("model/Projeto.php");
+
+class ProjetoController extends ControllerAbstract
 {
     public function index(){
-
-    }
-
-    public function delete(){
-
-    }
-
-    public function save(){
-
-    }
-
-    public function edit(){
-
+        $projetos = Projeto::findAll();
+        $view = new View("/views/projeto/index.phtml", ["projetos" => $projetos]);
+        $view->showContents();
     }
 }
