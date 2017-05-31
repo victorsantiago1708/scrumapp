@@ -12,7 +12,7 @@ function __autoload( $class ){
 
 class ApplicationPHP
 {
-    static $instance = null;
+    private static $instance = null;
 	static $path = "";
 	static $http = null;
 	
