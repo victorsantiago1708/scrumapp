@@ -1,0 +1,47 @@
+<meta charset="utf-8">
+
+<?php
+require_once ("views/layouts/main.phtml");
+
+$projetos = $this->getParams()["projetos"];
+?>
+
+
+
+<div class="container">
+    <div class="row">
+        <h1 style="border-bottom: 1px dotted #ccc;margin-bottom: 20px;">Projetos</h1>
+    </div>
+    <?php
+    if(count($projetos) <= 0) {
+        ?>
+        <div class="alert alert-warning"><b>Atenção!</b> Nenhum projeto foi encontrado.
+            <a href="/scrumapp/projeto/novo" class="btn btn-primary">
+                Novo projeto <i class="fa fa-cubes"></i>
+            </a>
+        </div>
+        <?php
+    }
+    foreach ($projetos as $projeto): ?>
+        <div class="col-md-4">
+
+
+            <div class="projectCard">
+                <div class="row">
+                    <div class="col-md-3 pull-right itens-right-top">
+                        <button class="bt btn-sm btn-primary"><i class="fa fa-eye"></i></button>
+                        <button class="bt btn-sm btn-danger"><i class="fa fa-trash"></i></button>
+                    </div>
+                </div>
+                <div class="row">
+                    <h3><?php echo $projeto->getNome(); ?></h3>
+                    <p>
+                        <?php echo $projeto->getDescricao(); ?>
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    <?php endforeach; ?>
+</div>
+

@@ -7,7 +7,7 @@ class Projeto extends Model
     private $descricao = "";
     private $sprints = Array();
     private $equipe = null;
-    private $status = "";
+    private $status = "ANDAMENTO";
     private $dataInicio = null;
     private $dataTermino = null;
 
@@ -37,15 +37,15 @@ class Projeto extends Model
     public function save( ){
         $sql = "";
 
-        if($this->nome == "" || $this->descricao == "" || $this->status == "" || $this->dataInicio == null || $this->dataTermino == null){
+        if($this->nome == "" || $this->descricao == "" || $this->equipe == null || $this->status == "" || $this->dataInicio == null || $this->dataTermino == null){
             return false;
         }
 
         if($this->id == null){
-            $sql = "Insert into projeto (nome, descricao, status, dataInicio, dataTermino) 
-                      values ('{$this->nome}', '{$this->descricao}', '{$this->status}', '{$this->dataInicio}', '{$this->dataTermino}')";
+            $sql = "Insert into projeto (nome, descricao, status, equipe, dataInicio, dataTermino) 
+                      values ('{$this->nome}', '{$this->descricao}', '{$this->status}', {$this->equipe->getId()}, '{$this->dataInicio}', '{$this->dataTermino}')";
         }else{
-            $sql = "Update projeto set nome = '{$this->nome}', descricao = '{$this->descricao}', status = '{$this->status}', dataInicio = '{$this->dataInicio}',
+            $sql = "Update projeto set nome = '{$this->nome}', descricao = '{$this->descricao}', status = '{$this->status}', equipe = {$this->equipe->getId()}, dataInicio = '{$this->dataInicio}',
                       dataTermino = '{$this->dataTermino}' where id = {$this->id}";
         }
 

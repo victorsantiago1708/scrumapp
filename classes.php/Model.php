@@ -22,7 +22,11 @@ abstract class Model
         $sql = "Select * from {strtolower($classe)} where id = {$id}";
         $result = Datasource::getInstance()->query( $sql );
         $rows = $result->fetchAll( PDO::FETCH_ASSOC );
-        return self::create($rows, strtoupper($classe))[0];
+        if(isset(self::create($rows, strtoupper($classe))[0])){
+            return self::create($rows, strtoupper($classe))[0];
+        }else{
+            return null;
+        }
     }
 
     public static function findAllModel($classe){

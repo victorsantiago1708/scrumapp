@@ -5,6 +5,7 @@ class View
     private $view = "";
     private $params = array();
     private $content = "";
+    private $errors = array();
 
     public function __construct( $view, $params = array() )
     {
@@ -63,6 +64,24 @@ class View
     {
         $this->params = $params;
     }
+
+    /**
+     * @return array
+     */
+    public function getErrors()
+    {
+        return $this->errors;
+    }
+
+    /**
+     * @param array $errors
+     */
+    public function setErrors($errors)
+    {
+        $this->errors = $errors;
+    }
+
+
 
 
 }
