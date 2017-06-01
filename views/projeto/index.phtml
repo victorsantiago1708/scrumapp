@@ -48,9 +48,25 @@ $projetos = $this->getParams()["projetos"];
                     <tr>
                         <td><?=$projeto->getNome();?></td>
                         <td><?=$projeto->getDescricao();?></td>
-                        <td><?=$projeto->getStatus();?></td>
-                        <td><?=$projeto->getDataInicio();?></td>
-                        <td><?=$projeto->getDataTermino();?></td>
+                        <td>
+                           <?php
+                                if($projeto->getStatus() == "ANDAMENTO"){
+                           ?>
+                                    <label class="label label-warning"><?=$projeto->getStatus();?>
+                           <?php
+                                }else if($projeto->getStatus() == "CANCELADO"){
+                           ?>
+                                    <label class="label label-danger"><?=$projeto->getStatus();?>
+                           <?php
+                                }else if($projeto->getStatus() == "CONCLUÍDO"){
+                           ?>
+                                    <label class="label label-success"><?=$projeto->getStatus();?>
+                           <?php
+                                }
+                           ?>
+                        </td>
+                        <td><?=date_format(date_create($projeto->getDataInicio()),"d/m/Y");?></td>
+                        <td><?=date_format(date_create($projeto->getDataTermino()),"d/m/Y");?></td>
                         <td>
                             <button class="btn btn-primary">
                                 <i class="fa fa-pencil"></i>
@@ -70,4 +86,5 @@ $projetos = $this->getParams()["projetos"];
     </div>
 
 </div>
+
 

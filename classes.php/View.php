@@ -6,6 +6,7 @@ class View
     private $params = array();
     private $content = "";
     private $errors = array();
+    private $msgsSucesso = array();
 
     public function __construct( $view, $params = array() )
     {
@@ -21,6 +22,26 @@ class View
         $this->content = ob_get_contents();
         ob_end_clean();
         return $this->content;
+    }
+
+    public function getMsgsSucesso(){
+        return $this->msgsSucesso;
+    }
+
+    public function getDivSuccess(){
+        $html = "<div class='alert alert-success alert-dismissable'>";
+        $html .= "<a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>";
+        $html .= "<ul>";
+        foreach ($this->msgsSucesso as $msg):
+            $html .= "<li>".$msg."</li>";
+        endforeach;
+        $html .= "</ul>";
+        $html .= "</div>";
+        return $html;
+    }
+
+    public function setMsgsSucesso($msgs = array()){
+        $this->msgsSucesso = $msgs;
     }
 
     /**
