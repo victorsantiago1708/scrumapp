@@ -33,10 +33,8 @@ class ProjetoController extends ControllerAbstract
 
         if(isset(HttpRequest::$params["equipe"]) && HttpRequest::$params["equipe"]!="")
             $equipe = HttpRequest::$params["equipe"];
-
-        $equipe = 1;
-//        else
-//            array_push($errors, "Selecione uma equipe que trabalhará no projeto");
+        else
+            array_push($errors, "Selecione uma equipe que trabalhará no projeto");
 
         if(HttpRequest::$params["dataInicial"]!="")
             $dataInicial = HttpRequest::$params["dataInicial"];
@@ -48,9 +46,10 @@ class ProjetoController extends ControllerAbstract
         else
             array_push($errors, "Defina uma data de término do projeto");
 
+        $equipes = Equipe::findAll();
+        $view = new View("views/projeto/novo.phtml", ["equipes" => $equipes]);
+
         if(count($errors) > 0){
-            $equipes = Equipe::findAll();
-            $view = new View("views/projeto/novo.phtml", ["equipes" => $equipes]);
             $view->setErrors($errors);
             $view->showContents();
         }else{
@@ -61,10 +60,14 @@ class ProjetoController extends ControllerAbstract
             $projeto->setDataInicio($dataInicial);
             $projeto->setDataTermino($dataTermino);
             if($projeto->save()){
-                $this->redirect("/scrumapp/projeto/novo");
+                $view->setMsgsSucesso(["Projeto criado com sucesso"]);
+                $view->showContents();
+
             }
 
         }
+
+
 
     }
 }

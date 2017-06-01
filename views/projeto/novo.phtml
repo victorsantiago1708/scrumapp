@@ -1,11 +1,11 @@
 <meta charset="utf-8">
-
+<script src="<?=ApplicationPHP::$path.'/app/assets/javascript/projeto/projeto.js'?>"></script>
 <?php
 require_once ("views/layouts/main.phtml");
 $equipes = $this->getParams()["equipes"];
 ?>
 
-<div class="container" id="conteudo">
+<div class="container">
     <div class="row">
         <h1 style="border-bottom: 1px dotted #ccc;margin-bottom: 20px;">Novo Projeto</h1>
     </div>
@@ -24,9 +24,13 @@ $equipes = $this->getParams()["equipes"];
                 <?php endforeach; ?>
             </ul>
         </div>
-    <?php } ?>
+    <?php
+        }else if(count($this->getMsgsSucesso()) > 0 ){
+            echo $this->getDivSuccess();
+        }
+    ?>
     <div class="row">
-        <form action="/scrumapp/projeto/save" method="post">
+        <form method="post" action="/scrumapp/projeto/save" name="formProjeto" id="formProjeto">
             <div class="row" style="margin-bottom: 10px">
                 <div class="form-group" >
                     <div class="col-md-3">
@@ -63,7 +67,7 @@ $equipes = $this->getParams()["equipes"];
                     </div>
                     <div class="col-md-3">
                         <label style="vertical-align: 30px">&nbsp;</label>
-                        <button class="btn btn-primary">
+                        <button class="btn btn-primary saveProjeto" type="submit">
                             Salvar <i class="fa fa-check"></i>
                         </button>
                     </div>

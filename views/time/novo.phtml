@@ -1,0 +1,85 @@
+<meta charset="utf-8">
+<script src="<?=ApplicationPHP::$path.'/app/assets/javascript/time/time.js'?>"></script>
+<?php
+require_once ("views/layouts/main.phtml");
+$usuarios = $this->getParams()["usuarios"];
+?>
+
+<div class="container">
+    <div class="row">
+        <h1 style="border-bottom: 1px dotted #ccc;margin-bottom: 20px;">Novo Time</h1>
+    </div>
+    <div class="row" style="margin-bottom: 20px;">
+        <div class="col-md-5" style="padding-left:0px;">
+            <a href="/scrumapp/time/" class="btn btn-warning">
+                Voltar <i class="fa fa-arrow-left"></i>
+            </a>
+        </div>
+    </div>
+    <?php if(count($this->getErrors()) > 0){ ?>
+        <div class="alert alert-danger">
+            <ul>
+                <?php foreach ($this->getErrors() as $error): ?>
+                    <li><?=$error?></li>
+                <?php endforeach; ?>
+            </ul>
+        </div>
+    <?php
+        }else if(count($this->getMsgsSucesso()) > 0 ){
+            echo $this->getDivSuccess();
+        }
+    ?>
+    <div class="alert alert-success hide alertasucesso">Projeto salvo com sucesso!</div>
+    <div class="row">
+        <form method="post" action="/scrumapp/time/save" name="formTime" id="formTime">
+            <div class="row" style="margin-bottom: 10px">
+                <div class="form-group" >
+                    <div class="col-md-3">
+                        <label>Nome</label>
+                        <input type="text" name="nome" id="nome" class="form-control"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label>Categoria</label>
+                        <input type="text" name="categoria" id="categoria" class="form-control"/>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+
+                    <label>Membros</label><br/>
+                    <table class="table table-responsive table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Usuário</th>
+                                <th>&nbsp;</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        <?php
+                        foreach ($usuarios as $usuario):
+                            ?>
+                            <tr>
+                                <td><?=$usuario->getNome();?></td>
+                                <td><input type="checkbox" value="<?=$usuario->getId();?>" name="membros[]"/></td>
+                            </tr>
+                        <?php
+                        endforeach;
+                        ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3" style="padding-left: 0px;">
+                    <label style="vertical-align: 30px">&nbsp;</label>
+                    <button class="btn btn-primary saveProjeto" type="submit">
+                        Salvar <i class="fa fa-check"></i>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+</div>
+

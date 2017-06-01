@@ -12,7 +12,7 @@ class Equipe extends Model
     public function save( ){
         $sql = "";
 
-        if($this->nome == "" || $this->categoria == ""){
+        if($this->nome == "" || $this->categoria == "" || count($this->membros) <= 0){
             return false;
         }
 
@@ -26,8 +26,38 @@ class Equipe extends Model
         $query = Datasource::getInstance()->prepare($sql);
         $query->execute();
 
+        if(!$this->saveMembros(self::getEquipeRecenteAdd())){
+            return false;
+        }
+
         return $query->rowCount() > 0;
 
+    }
+
+    private static function getEquipeRecenteAdd(){
+        $sql = "Select * from equipe order by id desc limit 1}";
+        $result = Datasource::getInstance()->query( $sql );
+        $rows = $result->fetchAll( PDO::FETCH_ASSOC );
+        if(isset(self::create($rows, strtoupper("Equipe"))[0])){
+            return self::create($rows, strtoupper("Equipe"))[0];
+        }else{
+            return null;
+        }
+    }
+
+    public function saveMembros($equipe = null){
+        if($equipe != null){
+
+            foreach ($this->membros as $membro):
+                $query = Datasource::getInstance()->prepare($sql);
+                $query->execute();
+                $sql .= "Inset into equipe_membros (equipe_id, usuario_id) values ({},{});";
+            endforeach;
+
+            return true;
+        }else{
+            return false;
+        }
     }
 
     public function delete(){

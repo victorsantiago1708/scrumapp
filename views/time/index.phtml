@@ -7,18 +7,31 @@ $times = $this->getParams()["times"];
 ?>
 
 <div class="container">
+    <div class="row">
+        <h1 style="border-bottom: 1px dotted #ccc;margin-bottom: 20px;">Times</h1>
+    </div>
+    <div class="row" style="margin-bottom: 20px;">
+        <div class="col-md-5" style="vertical-align: 10px;padding-left: 0px;">
+            <a href="/scrumapp/time/novo" class="btn btn-primary">
+                Novo Time <i class="fa fa-users"></i>
+            </a>
+        </div>
+    </div>
 
     <?php
         if(count($times) <= 0) {
     ?>
+    <div class="row">
             <div class="alert alert-warning"><b>Atenção!</b> Nenhum time foi encontrado.
                 <button class="btn btn-primary">
                     Novo Time <i class="fa fa-users"></i>
                 </button>
             </div>
+    </div>
     <?php
         }else{
     ?>
+        <div class="row">
             <table class="table table-bordered">
 
                 <thead>
@@ -53,6 +66,7 @@ $times = $this->getParams()["times"];
                 ?>
                 </tbody>
             </table>
+        </div>
     <?php
         }
     ?>
