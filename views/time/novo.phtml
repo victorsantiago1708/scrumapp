@@ -2,7 +2,8 @@
 <script src="<?=ApplicationPHP::$path.'/app/assets/javascript/time/time.js'?>"></script>
 <?php
 require_once ("views/layouts/main.phtml");
-$usuarios = $this->getParams()["usuarios"];
+$usuarios = View::$params["usuarios"];
+$equipe = isset(View::$params["equipe"]) ? View::$params["equipe"] : "";
 ?>
 
 <div class="container">
@@ -16,17 +17,17 @@ $usuarios = $this->getParams()["usuarios"];
             </a>
         </div>
     </div>
-    <?php if(count($this->getErrors()) > 0){ ?>
+    <?php if(count(View::$errors) > 0){ ?>
         <div class="alert alert-danger">
             <ul>
-                <?php foreach ($this->getErrors() as $error): ?>
+                <?php foreach (View::$errors as $error): ?>
                     <li><?=$error?></li>
                 <?php endforeach; ?>
             </ul>
         </div>
     <?php
-        }else if(count($this->getMsgsSucesso()) > 0 ){
-            echo $this->getDivSuccess();
+        }else if(count(View::$msgsSucesso) > 0 ){
+            echo View::getDivSuccess();
         }
     ?>
     <div class="alert alert-success hide alertasucesso">Projeto salvo com sucesso!</div>
@@ -36,11 +37,11 @@ $usuarios = $this->getParams()["usuarios"];
                 <div class="form-group" >
                     <div class="col-md-3">
                         <label>Nome</label>
-                        <input type="text" name="nome" id="nome" class="form-control"/>
+                        <input type="text" name="nome" id="nome" class="form-control" value="<?=$equipe!=''?$equipe->getNome():'';?>"/>
                     </div>
                     <div class="col-md-3">
                         <label>Categoria</label>
-                        <input type="text" name="categoria" id="categoria" class="form-control"/>
+                        <input type="text" name="categoria" id="categoria" class="form-control" value="<?=$equipe!=''?$equipe->getCategoria():'';?>"/>
                     </div>
                 </div>
             </div>
@@ -61,7 +62,7 @@ $usuarios = $this->getParams()["usuarios"];
                             ?>
                             <tr>
                                 <td><?=$usuario->getNome();?></td>
-                                <td><input type="checkbox" value="<?=$usuario->getId();?>" name="membros[]"/></td>
+                                <td><input type="checkbox" value="<?=$usuario->getId();?>" name="membros[]" <?=(in_array($usuario, $equipe->getMembros())) ? "checked": ""?>/></td>
                             </tr>
                         <?php
                         endforeach;

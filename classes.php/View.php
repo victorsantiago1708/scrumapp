@@ -3,15 +3,15 @@
 class View
 {
     private $view = "";
-    private $params = array();
+    static $params = array();
     private $content = "";
-    private $errors = array();
-    private $msgsSucesso = array();
+    static $errors = array();
+    static $msgsSucesso = array();
 
     public function __construct( $view, $params = array() )
     {
         $this->view = $view;
-        $this->params = $params;
+        self::$params = $params;
     }
 
     private function getContents()
@@ -24,15 +24,11 @@ class View
         return $this->content;
     }
 
-    public function getMsgsSucesso(){
-        return $this->msgsSucesso;
-    }
-
-    public function getDivSuccess(){
+    public static function getDivSuccess(){
         $html = "<div class='alert alert-success alert-dismissable'>";
         $html .= "<a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>";
         $html .= "<ul>";
-        foreach ($this->msgsSucesso as $msg):
+        foreach (self::$msgsSucesso as $msg):
             $html .= "<li>".$msg."</li>";
         endforeach;
         $html .= "</ul>";
@@ -41,7 +37,7 @@ class View
     }
 
     public function setMsgsSucesso($msgs = array()){
-        $this->msgsSucesso = $msgs;
+        self::$msgsSucesso = $msgs;
     }
 
     /**
@@ -69,40 +65,5 @@ class View
     {
         $this->view = $view;
     }
-
-    /**
-     * @return array
-     */
-    public function getParams()
-    {
-        return $this->params;
-    }
-
-    /**
-     * @param array $params
-     */
-    public function setParams($params)
-    {
-        $this->params = $params;
-    }
-
-    /**
-     * @return array
-     */
-    public function getErrors()
-    {
-        return $this->errors;
-    }
-
-    /**
-     * @param array $errors
-     */
-    public function setErrors($errors)
-    {
-        $this->errors = $errors;
-    }
-
-
-
 
 }

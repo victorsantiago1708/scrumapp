@@ -17,25 +17,29 @@ class Equipe extends Model
         }
 
         if($this->id == null){
-            $sql = "Insert into equipe (nome, categoria) 
+            $sql = "Insert into `equipe` (`nome`, `categoria`) 
                       values ('{$this->nome}', '{$this->categoria}')";
         }else{
-            $sql = "Update equipe set nome = '{$this->nome}', categoria = '{$this->categoria}' where id = {$this->id}";
+            $sql = "Update `equipe` set `nome` = '{$this->nome}', `categoria` = '{$this->categoria}' where `id` = {$this->id}";
         }
 
         $query = Datasource::getInstance()->prepare($sql);
         $query->execute();
 
-        if(!$this->saveMembros(self::getEquipeRecenteAdd())){
+        if($query->rowCount() > 0){
+            if(!$this->saveMembros(self::getEquipeRecenteAdd())){
+                return false;
+            }else{
+                return true;
+            }
+        }else{
             return false;
         }
-
-        return $query->rowCount() > 0;
 
     }
 
     private static function getEquipeRecenteAdd(){
-        $sql = "Select * from equipe order by id desc limit 1}";
+        $sql = "Select * from equipe order by id desc limit 1";
         $result = Datasource::getInstance()->query( $sql );
         $rows = $result->fetchAll( PDO::FETCH_ASSOC );
         if(isset(self::create($rows, strtoupper("Equipe"))[0])){
@@ -47,11 +51,14 @@ class Equipe extends Model
 
     public function saveMembros($equipe = null){
         if($equipe != null){
+            $sql = "delete from equipe_membros where equipe_id = {$equipe->getId()}";
+            $query = Datasource::getInstance()->prepare($sql);
+            $query->execute();
 
             foreach ($this->membros as $membro):
+                $sql = "Insert into equipe_membros (`equipe_id`, `usuario_id`) values ({$equipe->getId()},{$membro->getId()})";
                 $query = Datasource::getInstance()->prepare($sql);
                 $query->execute();
-                $sql .= "Inset into equipe_membros (equipe_id, usuario_id) values ({},{});";
             endforeach;
 
             return true;
@@ -62,10 +69,18 @@ class Equipe extends Model
 
     public function delete(){
 
-        $sql = "DELETE FROM equipe WHERE id = :id";
+        $sql = "DELETE FROM equipe_membros WHERE equipe_id = :id";
         $stmt = Datasource::getInstance()->prepare( $sql );
         $stmt->bindParam( ':id', $this->getId() );
         $result = $stmt->execute();
+
+        if($stmt->rowCount() > 0){
+            $sql = "DELETE FROM equipe WHERE id = :id";
+            $stmt = Datasource::getInstance()->prepare( $sql );
+            $stmt->bindParam( ':id', $this->getId() );
+            $result = $stmt->execute();
+        }
+
         return $stmt->rowCount() > 0;
     }
 
@@ -114,7 +129,15 @@ class Equipe extends Model
      */
     public function getMembros()
     {
-        return $this->membros;
+        $sql = "Select * from equipe_membros where equipe_id = {$this->getId()}";
+        $result = Datasource::getInstance()->query( $sql );
+        $rows = $result->fetchAll( PDO::FETCH_ASSOC );
+        $membros = array();
+        foreach ($rows as $row):
+            $membro = Usuario::get($row['usuario_id']);
+            array_push($membros, $membro);
+        endforeach;
+        return $membros;
     }
 
     /**
