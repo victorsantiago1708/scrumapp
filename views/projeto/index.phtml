@@ -6,15 +6,17 @@ require_once ("views/layouts/main.phtml");
 $projetos = $this->getParams()["projetos"];
 ?>
 
+
+
 <div class="container">
 
 <?php
     if(count($projetos) <= 0) {
 ?>
         <div class="alert alert-warning"><b>Atenção!</b> Nenhum projeto foi encontrado.
-            <button class="btn btn-primary">
+            <a href="/scrumapp/projeto/novo" class="btn btn-primary">
                 Novo projeto <i class="fa fa-cubes"></i>
-            </button>
+            </a>
         </div>
 <?php
     }

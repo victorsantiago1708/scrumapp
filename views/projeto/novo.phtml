@@ -1,0 +1,50 @@
+<meta charset="utf-8">
+
+<?php
+require_once ("views/layouts/main.phtml");
+$equipes = $this->getParams()["equipes"];
+?>
+
+<div class="container" id="conteudo">
+    <div class="row">
+        <h1 style="border-bottom: 1px dotted #ccc;margin-bottom: 20px;">Novo Projeto</h1>
+    </div>
+    <form>
+        <div class="row" style="margin-bottom: 10px">
+            <div class="form-group" >
+                <div class="col-md-3">
+                    <label>Nome</label>
+                    <input type="text" name="nome" id="nome" class="form-control"/>
+                </div>
+                <div class="col-md-4">
+                    <label>Descrição</label>
+                    <input type="text" name="descricao" id="descricao" class="form-control"/>
+                </div>
+                <div class="col-md-4">
+                    <label>Equipe</label>
+                    <select name="equipe" id="equipe" class="form-control">
+                        <?php
+                        foreach ($equipes as $equipe):
+                            ?>
+                            <option value="<?=$equipe->getId();?>"><?=$equipe->getNome();?></option>
+                            <?php
+                        endforeach;
+                        ?>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group">
+                <div class="col-md-3">
+                    <label>Data de Início</label>
+                    <input type="date" name="dataInicial" id="dataInicial" class="form-control"/>
+                </div>
+                <div class="col-md-3">
+                    <label>Data de Término</label>
+                    <input type="date" name="dataTermino" id="dataTermino" class="form-control"/>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
