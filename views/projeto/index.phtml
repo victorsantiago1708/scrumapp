@@ -9,7 +9,18 @@ $projetos = $this->getParams()["projetos"];
 
 
 <div class="container">
-
+    <div class="row">
+        <div class="col-md-12 pull-left">
+            <h1 style="border-bottom: 1px dotted #ccc;margin-bottom: 20px;">Projetos</h1>
+        </div>
+    </div>
+    <div class="row" style="margin-bottom: 20px;">
+        <div class="col-md-5" style="vertical-align: 10px;">
+            <a href="/scrumapp/projeto/novo" class="btn btn-primary">
+                Novo projeto <i class="fa fa-cubes"></i>
+            </a>
+        </div>
+    </div>
 <?php
     if(count($projetos) <= 0) {
 ?>
@@ -18,19 +29,45 @@ $projetos = $this->getParams()["projetos"];
                 Novo projeto <i class="fa fa-cubes"></i>
             </a>
         </div>
-<?php
-    }
-    foreach ($projetos as $projeto): ?>
-    <div class="col-md-4">
-        <div class="projectCard">
-            <?php echo $projeto->getNome(); ?>
-        </div>
+<?php } ?>
+    <div class="row">
         <div class="col-md-12">
-            <span>
-                <?php echo $projeto->getDescricao(); ?>
-            </span>
+            <table class="table table-responsive table-bordered">
+                <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Descrição</th>
+                    <th>Status</th>
+                    <th>Data Início</th>
+                    <th>Data Término</th>
+                    <th>Ações</th>
+                </tr>
+                </thead>
+                <tbody>
+                <?php foreach ($projetos as $projeto): ?>
+                    <tr>
+                        <td><?=$projeto->getNome();?></td>
+                        <td><?=$projeto->getDescricao();?></td>
+                        <td><?=$projeto->getStatus();?></td>
+                        <td><?=$projeto->getDataInicio();?></td>
+                        <td><?=$projeto->getDataTermino();?></td>
+                        <td>
+                            <button class="btn btn-primary">
+                                <i class="fa fa-pencil"></i>
+                            </button>
+                            <button class="btn btn-primary">
+                                <i class="fa fa-eye"></i>
+                            </button>
+                            <button class="btn btn-danger">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+                </tbody>
+            </table>
         </div>
     </div>
-<?php endforeach; ?>
+
 </div>
 

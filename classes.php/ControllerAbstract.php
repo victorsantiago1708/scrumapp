@@ -18,4 +18,8 @@ class ControllerAbstract
 
     }
 
+    public function redirect($link){
+        header("location: $link");
+    }
+
 }

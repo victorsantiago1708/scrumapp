@@ -1,3 +1,16 @@
 .titulo{
     border-bottom: 1px dotted #ccc!important;
 }
+
+.projectCard{
+    border: 2px solid #b40b17;
+    border-radius: 4px;
+    background: #ffe5e7;
+    text-align: center;
+}
+
+.itens-right-top{
+    display: inline;
+    margin-right: 5px;
+    padding: 0px;
+}

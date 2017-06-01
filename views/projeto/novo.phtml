@@ -9,42 +9,67 @@ $equipes = $this->getParams()["equipes"];
     <div class="row">
         <h1 style="border-bottom: 1px dotted #ccc;margin-bottom: 20px;">Novo Projeto</h1>
     </div>
-    <form>
-        <div class="row" style="margin-bottom: 10px">
-            <div class="form-group" >
-                <div class="col-md-3">
-                    <label>Nome</label>
-                    <input type="text" name="nome" id="nome" class="form-control"/>
-                </div>
-                <div class="col-md-4">
-                    <label>Descrição</label>
-                    <input type="text" name="descricao" id="descricao" class="form-control"/>
-                </div>
-                <div class="col-md-4">
-                    <label>Equipe</label>
-                    <select name="equipe" id="equipe" class="form-control">
-                        <?php
-                        foreach ($equipes as $equipe):
-                            ?>
-                            <option value="<?=$equipe->getId();?>"><?=$equipe->getNome();?></option>
+    <div class="row" style="margin-bottom: 20px;">
+        <div class="col-md-5" style="padding-left:0px;">
+            <a href="/scrumapp/projeto/" class="btn btn-warning">
+                Voltar <i class="fa fa-arrow-left"></i>
+            </a>
+        </div>
+    </div>
+    <?php if(count($this->getErrors()) > 0){ ?>
+        <div class="alert alert-danger">
+            <ul>
+                <?php foreach ($this->getErrors() as $error): ?>
+                    <li><?=$error?></li>
+                <?php endforeach; ?>
+            </ul>
+        </div>
+    <?php } ?>
+    <div class="row">
+        <form action="/scrumapp/projeto/save" method="post">
+            <div class="row" style="margin-bottom: 10px">
+                <div class="form-group" >
+                    <div class="col-md-3">
+                        <label>Nome</label>
+                        <input type="text" name="nome" id="nome" class="form-control"/>
+                    </div>
+                    <div class="col-md-4">
+                        <label>Descrição</label>
+                        <input type="text" name="descricao" id="descricao" class="form-control"/>
+                    </div>
+                    <div class="col-md-4">
+                        <label>Equipe</label>
+                        <select name="equipe" id="equipe" class="form-control">
                             <?php
-                        endforeach;
-                        ?>
-                    </select>
+                            foreach ($equipes as $equipe):
+                                ?>
+                                <option value="<?=$equipe->getId();?>"><?=$equipe->getNome();?></option>
+                                <?php
+                            endforeach;
+                            ?>
+                        </select>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="form-group">
-                <div class="col-md-3">
-                    <label>Data de Início</label>
-                    <input type="date" name="dataInicial" id="dataInicial" class="form-control"/>
-                </div>
-                <div class="col-md-3">
-                    <label>Data de Término</label>
-                    <input type="date" name="dataTermino" id="dataTermino" class="form-control"/>
+            <div class="row">
+                <div class="form-group">
+                    <div class="col-md-3">
+                        <label>Data de Início</label>
+                        <input type="date" name="dataInicial" id="dataInicial" class="form-control"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label>Data de Término</label>
+                        <input type="date" name="dataTermino" id="dataTermino" class="form-control"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label style="vertical-align: 30px">&nbsp;</label>
+                        <button class="btn btn-primary">
+                            Salvar <i class="fa fa-check"></i>
+                        </button>
+                    </div>
                 </div>
             </div>
-        </div>
-    </form>
+        </form>
+    </div>
+
 </div>
