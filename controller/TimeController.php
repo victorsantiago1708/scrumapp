@@ -44,7 +44,7 @@ class TimeController extends ControllerAbstract
         $view = new View("views/time/novo.phtml", ["usuarios" => $usuarios]);
 
         if(count($errors) > 0){
-            $view->setErrors($errors);
+            View::$errors = $errors;
             $view->showContents();
         }else{
             $time = new Equipe();
@@ -52,13 +52,19 @@ class TimeController extends ControllerAbstract
             $time->setCategoria($categoria);
             $time->setMembros($membros);
             if($time->save()){
-                $view->setMsgsSucesso(["Time criado com sucesso"]);
+                View::$msgsSucesso = ["Time criado com sucesso"];
                 $view->showContents();
             }
 
         }
 
+    }
 
-
+    public function edit(){
+        $usuarios = Usuario::findAll();
+        $id = HttpRequest::$params['id'];
+        $equipe = Equipe::get($id);
+        $view = new View("views/time/novo.phtml", ["usuarios" => $usuarios, "equipe" => $equipe]);
+        $view->showContents();
     }
 }
