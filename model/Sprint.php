@@ -6,7 +6,8 @@ class Sprint extends Model
     private $nome = "";
     private $descricao = "";
     private $status = "DISPONIVEL";
-    private $projetoId = null;
+    private $projeto_id = null;
+    private $responsaveis = array();
 
     public static function get($id){
         return Model::getModel($id, "Sprint");
@@ -15,7 +16,7 @@ class Sprint extends Model
     public function save( ){
         $sql = "";
 
-        if($this->nome == "" || $this->descricao == "" || $this->status == "" || $this->projetoId == null ){
+        if($this->nome == "" || $this->descricao == "" || $this->status == "" || $this->projeto_id == null ){
             return false;
         }
 
@@ -23,14 +24,19 @@ class Sprint extends Model
             Datasource::getInstance()->beginTransaction();
 
             if ($this->id == null) {
-                $sql = "Insert into sprint (nome, descricao, status, projetoId) 
-                          values ('{$this->nome}', '{$this->descricao}', '{$this->status}', {$this->getProjetoId()}";
+                $sql = "Insert into sprint (nome, descricao, status, projeto_id) 
+                          values ('{$this->nome}', '{$this->descricao}', '{$this->status}', {$this->getProjeto_id()})";
             } else {
-                $sql = "Update sprint set nome = '{$this->nome}', descricao = '{$this->descricao}', status = '{$this->status}', projetoId = {$this->getProjetoId()} where id = {$this->id}";
+                $sql = "Update sprint set nome = '{$this->nome}', descricao = '{$this->descricao}', status = '{$this->status}', projeto_id = {$this->getProjeto_id()} where id = {$this->id}";
             }
-
             $query = Datasource::getInstance()->prepare($sql);
             $query->execute();
+
+            if($this->id != null){
+                $this->saveResponsaveis($this);
+            }else{
+                $this->saveResponsaveis(self::getSprintRecenteAdd());
+            }
 
             Datasource::getInstance()->commit();
 
@@ -40,6 +46,36 @@ class Sprint extends Model
             return false;
         }
 
+    }
+
+    private static function getSprintRecenteAdd(){
+        $sql = "Select * from sprint order by id desc limit 1";
+        $result = Datasource::getInstance()->query( $sql );
+        $rows = $result->fetchAll( PDO::FETCH_ASSOC );
+
+        if(isset(self::create($rows, strtoupper("Sprint"))[0])){
+            return self::create($rows, strtoupper("Sprint"))[0];
+        }else{
+            return null;
+        }
+    }
+
+    public function saveResponsaveis($sprint = null){
+        if($sprint != null){
+            $sql = "delete from sprint_responsaveis where sprint_id = {$sprint->getId()}";
+            $query = Datasource::getInstance()->prepare($sql);
+            $query->execute();
+
+            foreach ($this->responsaveis as $responsavel):
+                $sql = "Insert into sprint_responsaveis (sprint_id, usuario_id) values ({$sprint->getId()},{$responsavel->getId()})";
+                $query = Datasource::getInstance()->prepare($sql);
+                $query->execute();
+            endforeach;
+
+            return true;
+        }else{
+            return false;
+        }
     }
 
     public function delete(){
@@ -126,18 +162,43 @@ class Sprint extends Model
     /**
      * @return null
      */
-    public function getProjetoId()
+    public function getProjeto_id()
     {
-        return $this->projetoId;
+        return $this->projeto_id;
     }
 
     /**
      * @param null $projetoID
      */
-    public function setProjetoId($projetoID)
+    public function setProjeto_id($projetoID)
     {
-        $this->projetoId = $projetoID;
+        $this->projeto_id = $projetoID;
     }
+
+    /**
+     * @return array
+     */
+    public function getResponsaveis()
+    {
+        $sql = "Select * from sprint_responsaveis where sprint_id = {$this->getId()}";
+        $result = Datasource::getInstance()->query( $sql );
+        $rows = $result->fetchAll( PDO::FETCH_ASSOC );
+        $responsaveis = array();
+        foreach ($rows as $row):
+            $membro = Usuario::get($row['usuario_id']);
+            array_push($responsaveis, $membro);
+        endforeach;
+        return $responsaveis;
+    }
+
+    /**
+     * @param array $responsaveis
+     */
+    public function setResponsaveis($responsaveis)
+    {
+        $this->responsaveis = $responsaveis;
+    }
+
 
 
 }

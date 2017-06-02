@@ -1,12 +1,14 @@
 var deleteProjeto;
 var novaSprintOpenModal;
 var criarSprint;
+var visualizarSprint;
 
 window.onload = function(){
 
     $(document).delegate(".delete", "click", deleteProjeto);
     $(document).delegate(".novaSprint", "click", novaSprintOpenModal);
     $(document).delegate(".criar", "click", criarSprint);
+    $(document).delegate(".visualizarSprint", "click", visualizarSprint);
     $('#novaSprint').on('hidden.bs.modal', function () {
         $(".erros").html("");
         $(".erros").addClass("hide");
@@ -42,18 +44,25 @@ criarSprint = function(){
     var projetoId = $("#projetoId").val();
     var sprintName = $("#nome").val();
     var sprintDescricao = $("#descricao").val();
+    var sprintsession = $("sprint-disponivel");
+    var id = $("#sprintId").val();
+
     if(sprintName!="" && sprintDescricao!=""){
         $.ajax({
             url: "/scrumapp/sprint/save",
             type: "post",
-            data: {nome: sprintName, descricao: sprintDescricao, projetoId: projetoId},
+            data: {nome: sprintName, descricao: sprintDescricao, projetoId: projetoId, id: id},
             success: function(data){
-                if(data['result'] != 'true'){
-                    $(".erros").html(data['mensagem']);
-                    $(".erros").fadeIn('fast', function(){ $(this).removeClass("hide"); });
+                var dados = JSON.parse(data);
+                if(dados['result'] == true || dados['result'] == 'true'){
+                    bootbox.alert(dados['mensagem'], function () {
+                        $("#novaSprint").modal('hide');
+                        window.location="/scrumapp/projeto/visualizar?id="+projetoId;
+                    });
+
                 }else{
-                    bootbox.alert(data['mensagem']);
-                    $("#novaSprint").modal('hide');
+                    $(".erros").html(dados['mensagem']);
+                    $(".erros").fadeIn('fast', function(){ $(this).removeClass("hide"); });
                 }
             }
         });
@@ -61,4 +70,11 @@ criarSprint = function(){
         $(".erros").html("Você esqueceu de preencher algum campo, favor insira os dados corretamente!");
         $(".erros").fadeIn('fast', function(){ $(this).removeClass("hide"); });
     }
+};
+
+visualizarSprint= function () {
+    $("#nome").val($(this).attr("data-nome"));
+    $("#descricao").val($(this).attr("data-descricao"));
+    $("#sprintId").val($(this).attr("data-id"));
+    novaSprintOpenModal();
 };

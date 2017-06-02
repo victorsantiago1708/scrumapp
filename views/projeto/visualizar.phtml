@@ -19,6 +19,14 @@ $projeto = View::$params['projeto'];
             <div class="sessionSprint sprint-disponivel">
                 <?php foreach ($projeto->getSprintsDisponiveis() as $sprint): ?>
                     <div class="sprint">
+                        <div class="pull-right">
+                            <button class="btn btn-sm btn-primary visualizarSprint"
+                                    data-nome="<?=$sprint->getNome()?>"
+                                    data-id="<?=$sprint->getId()?>"
+                                    data-descricao="<?=$sprint->getDescricao()?>">
+                                <i class="fa fa-eye"></i>
+                            </button>
+                        </div>
                         <h3><?=$sprint->getNome()?></h3>
                         <p><?=$sprint->getDescricao()?></p>
                     </div>
@@ -30,6 +38,14 @@ $projeto = View::$params['projeto'];
             <div class="sessionSprint sprint-andamento">
                 <?php foreach ($projeto->getSprintsAndamento() as $sprint): ?>
                     <div class="sprint">
+                        <div class="pull-right">
+                            <button class="btn btn-sm btn-primary visualizarSprint"
+                                    data-nome="<?=$sprint->getNome()?>"
+                                    data-id="<?=$sprint->getId()?>"
+                                    data-descricao="<?=$sprint->getDescricao()?>">
+                                <i class="fa fa-eye"></i>
+                            </button>
+                        </div>
                         <h3><?=$sprint->getNome()?></h3>
                         <p><?=$sprint->getDescricao()?></p>
                     </div>
@@ -41,6 +57,17 @@ $projeto = View::$params['projeto'];
             <div class="sessionSprint sprint-concluido">
                 <?php foreach ($projeto->getSprintsConcluidas() as $sprint): ?>
                     <div class="sprint">
+                        <div class="pull-right">
+                            <button class="btn btn-sm btn-primary visualizarSprint"
+                                    data-nome="<?=$sprint->getNome()?>"
+                                    data-id="<?=$sprint->getId()?>"
+                                    data-descricao="<?=$sprint->getDescricao()?>">
+                                <i class="fa fa-eye"></i>
+                            </button>
+                            <button class="btn btn-sm btn-primary atribuirSprint" data-id="<?=$sprint->getId()?>"
+                                <i class="fa fa-eye"></i>
+                            </button>
+                        </div>
                         <h3><?=$sprint->getNome()?></h3>
                         <p><?=$sprint->getDescricao()?></p>
                     </div>
@@ -61,6 +88,7 @@ $projeto = View::$params['projeto'];
                 <div class="alert alert-danger erros hide"></div>
                 <div class="alert alert-danger mensagens hide"></div>
                 <div class="row">
+                    <input type="hidden" name="sprintId" id="sprintId" value=""/>
                     <div class="col-md-4">
                         <label>Nome</label>
                         <input type="text" name="nome" id="nome" class="form-control" value=""/>
@@ -68,6 +96,25 @@ $projeto = View::$params['projeto'];
                     <div class="col-md-4">
                         <label>Descrição</label>
                         <textarea name="descricao" id="descricao" class="form-control"></textarea>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <label>Responsáveis</label>
+                        <table class="table table-responsive">
+                            <thead>
+                            <th>Membro</th>
+                            <th>&nbsp;</th>
+                            </thead>
+                            <tbody>
+                            <?php foreach ($projeto->getEquipe()->getMembros() as $membro):?>
+                                <tr>
+                                    <td><?=$membro->getNome()?></td>
+                                    <td><input type="checkbox" name="responsavel[]" value="<?=$membro->getId()?>"></td>
+                                </tr>
+                            <?php endforeach; ?>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>

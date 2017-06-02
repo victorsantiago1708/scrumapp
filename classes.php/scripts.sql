@@ -41,3 +41,11 @@ create table sprint(
     projeto_id int not null,
     FOREIGN KEY (projeto_id) REFERENCES projeto(id)
 );
+
+create table sprint_responsaveis (
+    id         INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    sprint_id  INT NOT NULL,
+    usuario_id INT NOT NULL,
+    FOREIGN KEY (sprint_id) REFERENCES sprint (id),
+    FOREIGN KEY (usuario_id) REFERENCES usuario (id)
+);
