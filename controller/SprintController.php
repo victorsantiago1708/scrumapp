@@ -1,11 +1,22 @@
 <?php
 
 require_once ("model/Sprint.php");
+require_once ("model/Usuario.php");
 
 class SprintController extends ControllerAbstract
 {
-    public function delete(){
-
+    public function delete()
+    {
+        parent::flashClear();
+        if(isset(HttpRequest::$params["id"]) && HttpRequest::$params["id"]!=""){
+            $sprint = Sprint::get(HttpRequest::$params["id"]);
+            if($sprint->delete()){
+                echo "true";
+            }else{
+                echo "Não foi possível excluir esse registro!";
+                return false;
+            }
+        }
     }
 
     public function save(){

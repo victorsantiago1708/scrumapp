@@ -156,6 +156,18 @@ class Equipe extends Model
         return $membros;
     }
 
+    public function getMembrosJson(){
+        $sql = "Select * from equipe_membros where equipe_id = {$this->getId()}";
+        $result = Datasource::getInstance()->query( $sql );
+        $rows = $result->fetchAll( PDO::FETCH_ASSOC );
+        $membros = array();
+        foreach ($rows as $row):
+            $membro = Usuario::get($row['usuario_id']);
+            array_push($membros, ["id" => $membro->getId()]);
+        endforeach;
+        return json_encode($membros);
+    }
+
     /**
      * @param array $membros
      */

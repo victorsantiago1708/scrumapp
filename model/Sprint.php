@@ -81,15 +81,25 @@ class Sprint extends Model
     public function delete(){
 
         try{
+
             Datasource::getInstance()->beginTransaction();
+
+            $sql = "delete from sprint_responsaveis where sprint_id = {$this->getId()}";
+            $query = Datasource::getInstance()->prepare($sql);
+            $query->execute();
+
             $sql = "DELETE FROM sprint WHERE id = :id";
             $stmt = Datasource::getInstance()->prepare( $sql );
             $stmt->bindParam( ':id', $this->getId() );
             $result = $stmt->execute();
+
             Datasource::getInstance()->commit();
+
             return true;
+
         }catch (Exception $e){
             Datasource::getInstance()->rollBack();
+
             return false;
         }
 
@@ -189,6 +199,15 @@ class Sprint extends Model
             array_push($responsaveis, $membro);
         endforeach;
         return $responsaveis;
+    }
+
+    public function getResponsaveisJson(){
+        $responsaveis = array();
+        foreach($this->getResponsaveis() as $responsavel):
+            array_push($responsaveis, $responsavel->getId());
+        endforeach;
+        $responsaveisJSON = json_encode($responsaveis);
+        return $responsaveisJSON;
     }
 
     /**

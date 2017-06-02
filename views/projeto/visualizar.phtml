@@ -2,10 +2,12 @@
 <?php
 require_once ("views/layouts/main.phtml");
 $projeto = View::$params['projeto'];
+$membros = ($projeto->getEquipe()->getId() != null) ? $projeto->getEquipe()->getMembros() : array();
 ?>
 
 <div class="container">
     <input type="hidden" name="projetoId" id="projetoId" value="<?=$projeto->getId()?>"/>
+    <input type="hidden" name="membros" id="membros" value='<?=$projeto->getEquipe()->getMembrosJson()?>'/>
     <div class="row">
         <h1 style="border-bottom: 1px dotted #ccc;margin-bottom: 20px;">Sprints
             <a href="#"  class="btn btn-primary novaSprint" style="vertical-align: top">
@@ -23,8 +25,12 @@ $projeto = View::$params['projeto'];
                             <button class="btn btn-sm btn-primary visualizarSprint"
                                     data-nome="<?=$sprint->getNome()?>"
                                     data-id="<?=$sprint->getId()?>"
-                                    data-descricao="<?=$sprint->getDescricao()?>">
+                                    data-descricao="<?=$sprint->getDescricao()?>"
+                                    data-responsavel='<?=$sprint->getResponsaveisJson()?>'>
                                 <i class="fa fa-eye"></i>
+                            </button>
+                            <button class="btn btn-sm btn-danger deleteSprint" id="<?=$sprint->getId()?>">
+                                <i class="fa fa-trash"></i>
                             </button>
                         </div>
                         <h3><?=$sprint->getNome()?></h3>
@@ -42,8 +48,12 @@ $projeto = View::$params['projeto'];
                             <button class="btn btn-sm btn-primary visualizarSprint"
                                     data-nome="<?=$sprint->getNome()?>"
                                     data-id="<?=$sprint->getId()?>"
-                                    data-descricao="<?=$sprint->getDescricao()?>">
+                                    data-descricao="<?=$sprint->getDescricao()?>"
+                                    data-responsavel='<?=$sprint->getResponsaveisJson()?>'>
                                 <i class="fa fa-eye"></i>
+                            </button>
+                            <button class="btn btn-sm btn-danger deleteSprint" id="<?=$sprint->getId()?>">
+                                <i class="fa fa-trash"></i>
                             </button>
                         </div>
                         <h3><?=$sprint->getNome()?></h3>
@@ -61,11 +71,12 @@ $projeto = View::$params['projeto'];
                             <button class="btn btn-sm btn-primary visualizarSprint"
                                     data-nome="<?=$sprint->getNome()?>"
                                     data-id="<?=$sprint->getId()?>"
-                                    data-descricao="<?=$sprint->getDescricao()?>">
+                                    data-descricao="<?=$sprint->getDescricao()?>"
+                                    data-responsavel='<?=$sprint->getResponsaveisJson()?>'>
                                 <i class="fa fa-eye"></i>
                             </button>
-                            <button class="btn btn-sm btn-primary atribuirSprint" data-id="<?=$sprint->getId()?>"
-                                <i class="fa fa-eye"></i>
+                            <button class="btn btn-sm btn-danger deleteSprint" id="<?=$sprint->getId()?>">
+                                <i class="fa fa-trash"></i>
                             </button>
                         </div>
                         <h3><?=$sprint->getNome()?></h3>
