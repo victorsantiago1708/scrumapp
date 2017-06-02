@@ -66,5 +66,15 @@
     min-height: 100px;
     max-height: 100px;
     background: #ffeff6;
-    padding:5px;
+    padding:8px;
+}
+
+.sprint > .labelsprint{
+    display: inline-block;
+    line-height: normal;
+    font-size: 13px;
+}
+
+.row{
+    margin-bottom: 5px;
 }

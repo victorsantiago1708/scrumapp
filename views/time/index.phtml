@@ -8,13 +8,12 @@ $times = View::$params["times"];
 
 <div class="container">
     <div class="row">
-        <h1 style="border-bottom: 1px dotted #ccc;margin-bottom: 20px;">Times</h1>
-    </div>
-    <div class="row" style="margin-bottom: 20px;">
-        <div class="col-md-5" style="vertical-align: 10px;padding-left: 0px;">
-            <a href="/scrumapp/time/novo" class="btn btn-primary">
-                Novo Time <i class="fa fa-users"></i>
-            </a>
+        <div class="col-md-12">
+            <h1 style="border-bottom: 1px dotted #ccc;margin-bottom: 20px;padding-bottom: 10px;">Times
+                <a href="/scrumapp/time/novo" class="btn btn-primary">
+                    Novo <i class="fa fa-users"></i>
+                </a>
+            </h1>
         </div>
     </div>
 
@@ -22,50 +21,48 @@ $times = View::$params["times"];
         if(count($times) <= 0) {
     ?>
     <div class="row">
-            <div class="alert alert-warning"><b>Atenção!</b> Nenhum time foi encontrado.
-                <button class="btn btn-primary">
-                    Novo Time <i class="fa fa-users"></i>
-                </button>
-            </div>
+        <div class="alert alert-warning"><b>Atenção!</b> Nenhum time foi encontrado.</div>
     </div>
     <?php
         }else{
     ?>
         <div class="row">
-            <table class="table table-bordered">
+            <div class="col-md-12">
+                <table class="table table-bordered">
 
-                <thead>
-                <tr>
-                    <th>Nome</th>
-                    <th>Categoria</th>
-                    <th>Ações</th>
-                </tr>
-                </thead>
-                <tbody>
-                <?php
-                foreach ($times as $time):
-                    ?>
+                    <thead>
                     <tr>
-                        <td><?=$time->getNome();?></td>
-                        <td><?=$time->getCategoria();?></td>
-                        <td>
-                            <a href="/scrumapp/time/edit?id=<?=$time->getId();?>" class="btn btn-primary">
-                                <i class="fa fa-edit"></i>
-                            </a>
-                            <button class="btn btn-primary">
-                                <i class="fa fa-cubes"></i>
-                            </button>
-                            <a href="#" id="<?=$time->getId();?>" class="btn btn-danger delete">
-                                <i class="fa fa-trash"></i>
-                            </a>
-
-                        </td>
+                        <th>Nome</th>
+                        <th>Categoria</th>
+                        <th>Ações</th>
                     </tr>
+                    </thead>
+                    <tbody>
                     <?php
-                endforeach;
-                ?>
-                </tbody>
-            </table>
+                    foreach ($times as $time):
+                        ?>
+                        <tr>
+                            <td><?=$time->getNome();?></td>
+                            <td><?=$time->getCategoria();?></td>
+                            <td>
+                                <a href="/scrumapp/time/edit?id=<?=$time->getId();?>" class="btn btn-primary">
+                                    <i class="fa fa-edit"></i>
+                                </a>
+                                <button class="btn btn-primary">
+                                    <i class="fa fa-cubes"></i>
+                                </button>
+                                <a href="#" id="<?=$time->getId();?>" class="btn btn-danger delete">
+                                    <i class="fa fa-trash"></i>
+                                </a>
+
+                            </td>
+                        </tr>
+                        <?php
+                    endforeach;
+                    ?>
+                    </tbody>
+                </table>
+            </div>
         </div>
     <?php
         }
