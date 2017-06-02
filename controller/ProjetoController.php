@@ -99,4 +99,12 @@ class ProjetoController extends ControllerAbstract
             }
         }
     }
+
+    public function visualizar(){
+        parent::flashClear();
+        $id = HttpRequest::$params['id'];
+        $projeto = Projeto::get($id);
+        $view = new View("views/projeto/visualizar.phtml", ["projeto" => $projeto]);
+        $view->showContents();
+    }
 }

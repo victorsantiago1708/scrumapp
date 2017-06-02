@@ -8,6 +8,9 @@ class Sprint extends Model
     private $status = "DISPONIVEL";
     private $projetoId = null;
 
+    public static function get($id){
+        return Model::getModel($id, "Sprint");
+    }
 
     public function save( ){
         $sql = "";

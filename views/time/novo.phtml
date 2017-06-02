@@ -9,7 +9,7 @@ $membros = ($equipe->getId() != null) ? $equipe->getMembros() : array();
 
 <div class="container">
     <div class="row">
-        <h1 style="border-bottom: 1px dotted #ccc;margin-bottom: 20px;"><?=($equipe!=null) ? 'Edita Time' : 'Novo Time' ?></h1>
+        <h1 style="border-bottom: 1px dotted #ccc;margin-bottom: 20px;"><?=($equipe->getId()!=null) ? 'Edita Time' : 'Novo Time' ?></h1>
     </div>
     <div class="row" style="margin-bottom: 20px;">
         <div class="col-md-5" style="padding-left:0px;">

@@ -6,6 +6,10 @@ class ControllerAbstract
 
     }
 
+    public function novo(){
+
+    }
+
     public function delete(){
 
     }

@@ -9,7 +9,7 @@ $projetoEquipe = $projeto->getEquipe() != null ? $projeto->getEquipe()->getId() 
 
 <div class="container">
     <div class="row">
-        <h1 style="border-bottom: 1px dotted #ccc;margin-bottom: 20px;">Novo Projeto</h1>
+        <h1 style="border-bottom: 1px dotted #ccc;margin-bottom: 20px;"><?=($projeto->getId()!=null) ? 'Edita Projeto' : 'Novo Projeto'?></h1>
     </div>
     <div class="row" style="margin-bottom: 20px;">
         <div class="col-md-5" style="padding-left:0px;">

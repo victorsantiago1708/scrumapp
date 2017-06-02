@@ -69,11 +69,11 @@ $projetos = View::$params["projetos"];
                         <td><?=date_format(date_create($projeto->getDataTermino()),"d/m/Y");?></td>
                         <td>
                             <a href="/scrumapp/projeto/edit?id=<?=$projeto->getId();?>" class="btn btn-primary">
-                                <i class="fa fa-pencil"></i>
+                                <i class="fa fa-edit"></i>
                             </a>
-                            <button class="btn btn-primary">
+                            <a href="/scrumapp/projeto/visualizar?id=<?=$projeto->getId();?>" class="btn btn-primary">
                                 <i class="fa fa-eye"></i>
-                            </button>
+                            </a>
                             <a href="#" id="<?=$projeto->getId();?>" class="btn btn-danger delete">
                                 <i class="fa fa-trash"></i>
                             </a>

@@ -20,6 +20,27 @@ class Projeto extends Model
         return Model::getModel($id, "Projeto");
     }
 
+    public function getSprintsDisponiveis(){
+        $sql = "Select * from sprint where status = 'DISPONIVEL' and projeto_id = {$this->getId()}";
+        $result = Datasource::getInstance()->query( $sql );
+        $rows = $result->fetchAll( PDO::FETCH_ASSOC );
+        return Model::create($rows, "Sprint");
+    }
+
+    public function getSprintsAndamento(){
+        $sql = "Select * from sprint where status = 'ANDAMENTO' and projeto_id = {$this->getId()}";
+        $result = Datasource::getInstance()->query( $sql );
+        $rows = $result->fetchAll( PDO::FETCH_ASSOC );
+        return Model::create($rows, "Sprint");
+    }
+
+    public function getSprintsConcluidas(){
+        $sql = "Select * from sprint where status = 'CONCLUIDA' and projeto_id = {$this->getId()}";
+        $result = Datasource::getInstance()->query( $sql );
+        $rows = $result->fetchAll( PDO::FETCH_ASSOC );
+        return Model::create($rows, "Sprint");
+    }
+
     public static function getByEquipe($equipe){
         $sql = "Select * from projeto where equipe = {$equipe->getId()}";
         $result = Datasource::getInstance()->query( $sql );
