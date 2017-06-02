@@ -18,9 +18,9 @@ $membros = ($projeto->getEquipe()->getId() != null) ? $projeto->getEquipe()->get
     <div class="row">
         <div class="col-md-4 nopadl">
             <h2 class="sessionSprintTitle">Disponíveis</h2>
-            <div class="sessionSprint sprint-disponivel">
+            <div class="sessionSprint sprint-disponivel" ondrop="drop(event)" ondragover="allowDrop(event)" id="disponivel">
                 <?php foreach ($projeto->getSprintsDisponiveis() as $sprint): ?>
-                    <div class="sprint">
+                    <div class="sprint" id="<?=$sprint->getId()?>" draggable="true" ondragstart="drag(event)">
                         <div class="pull-right">
                             <button class="btn btn-sm btn-primary visualizarSprint"
                                     data-nome="<?=$sprint->getNome()?>"
@@ -33,17 +33,17 @@ $membros = ($projeto->getEquipe()->getId() != null) ? $projeto->getEquipe()->get
                                 <i class="fa fa-trash"></i>
                             </button>
                         </div>
-                        <h3><?=$sprint->getNome()?></h3>
-                        <p><?=$sprint->getDescricao()?></p>
+                        <label class="label label-success labelsprint"><?=$sprint->getNome();?></label>
+                        <textarea style="resize: none;" readonly class="form-control"><?=$sprint->getDescricao();?></textarea>
                     </div>
                 <?php endforeach; ?>
             </div>
         </div>
         <div class="col-md-4 nopadl">
             <h2 class="sessionSprintTitle">Andamento</h2>
-            <div class="sessionSprint sprint-andamento">
+            <div class="sessionSprint sprint-andamento" ondrop="drop(event)" ondragover="allowDrop(event)" id="andamento">
                 <?php foreach ($projeto->getSprintsAndamento() as $sprint): ?>
-                    <div class="sprint">
+                    <div class="sprint" id="<?=$sprint->getId()?>" draggable="true" ondragstart="drag(event)">
                         <div class="pull-right">
                             <button class="btn btn-sm btn-primary visualizarSprint"
                                     data-nome="<?=$sprint->getNome()?>"
@@ -56,17 +56,17 @@ $membros = ($projeto->getEquipe()->getId() != null) ? $projeto->getEquipe()->get
                                 <i class="fa fa-trash"></i>
                             </button>
                         </div>
-                        <h3><?=$sprint->getNome()?></h3>
-                        <p><?=$sprint->getDescricao()?></p>
+                        <label class="label label-success labelsprint"><?=$sprint->getNome();?></label>
+                        <textarea style="resize: none;" readonly class="form-control"><?=$sprint->getDescricao();?></textarea>
                     </div>
                 <?php endforeach; ?>
             </div>
         </div>
         <div class="col-md-4 nopadl">
             <h2 class="sessionSprintTitle ">Concluídas</h2>
-            <div class="sessionSprint sprint-concluido">
+            <div class="sessionSprint sprint-concluido" ondrop="drop(event)" ondragover="allowDrop(event)" id="concluida">
                 <?php foreach ($projeto->getSprintsConcluidas() as $sprint): ?>
-                    <div class="sprint">
+                    <div class="sprint" id="<?=$sprint->getId()?>" draggable="true" ondragstart="drag(event)">
                         <div class="pull-right">
                             <button class="btn btn-sm btn-primary visualizarSprint"
                                     data-nome="<?=$sprint->getNome()?>"
@@ -79,8 +79,8 @@ $membros = ($projeto->getEquipe()->getId() != null) ? $projeto->getEquipe()->get
                                 <i class="fa fa-trash"></i>
                             </button>
                         </div>
-                        <h3><?=$sprint->getNome()?></h3>
-                        <p><?=$sprint->getDescricao()?></p>
+                        <label class="label label-success labelsprint"><?=$sprint->getNome();?></label>
+                        <textarea style="resize: none;" readonly class="form-control"><?=$sprint->getDescricao();?></textarea>
                     </div>
                 <?php endforeach; ?>
             </div>
@@ -93,24 +93,26 @@ $membros = ($projeto->getEquipe()->getId() != null) ? $projeto->getEquipe()->get
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Nova Sprint</h4>
+                <h4 class="modal-title">Sprint</h4>
             </div>
             <div class="modal-body">
                 <div class="alert alert-danger erros hide"></div>
                 <div class="alert alert-danger mensagens hide"></div>
                 <div class="row">
                     <input type="hidden" name="sprintId" id="sprintId" value=""/>
-                    <div class="col-md-4">
+                    <div class="col-md-12">
                         <label>Nome</label>
                         <input type="text" name="nome" id="nome" class="form-control" value=""/>
                     </div>
-                    <div class="col-md-4">
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
                         <label>Descrição</label>
                         <textarea name="descricao" id="descricao" class="form-control"></textarea>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-4">
+                    <div class="col-md-12">
                         <label>Responsáveis</label>
                         <table class="table table-responsive">
                             <thead>

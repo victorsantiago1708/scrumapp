@@ -9,13 +9,13 @@ $projetoEquipe = $projeto->getEquipe() != null ? $projeto->getEquipe()->getId() 
 
 <div class="container">
     <div class="row">
-        <h1 style="border-bottom: 1px dotted #ccc;margin-bottom: 20px;"><?=($projeto->getId()!=null) ? 'Edita Projeto' : 'Novo Projeto'?></h1>
-    </div>
-    <div class="row" style="margin-bottom: 20px;">
-        <div class="col-md-5" style="padding-left:0px;">
-            <a href="/scrumapp/projeto/" class="btn btn-warning">
-                Voltar <i class="fa fa-arrow-left"></i>
-            </a>
+        <div class="col-md-12">
+            <h1 style="border-bottom: 1px dotted #ccc;margin-bottom: 20px;padding-bottom: 10px;">
+                <?=($projeto->getId()!=null) ? 'Edita Projeto' : 'Novo Projeto'?>
+                <a href="/scrumapp/projeto/" class="btn btn-warning">
+                    Voltar <i class="fa fa-arrow-left"></i>
+                </a>
+            </h1>
         </div>
     </div>
     <?php if(count(View::$errors) > 0){ ?>
@@ -36,7 +36,7 @@ $projetoEquipe = $projeto->getEquipe() != null ? $projeto->getEquipe()->getId() 
             <input type="hidden" name="id" id="id" value="<?=$projeto->getId()?>"
             <div class="row" style="margin-bottom: 10px">
                 <div class="form-group" >
-                    <div class="col-md-3" style="padding-left: 0px;">
+                    <div class="col-md-3">
                         <label>Nome</label>
                         <input type="text" name="nome" id="nome" class="form-control" value="<?=$projeto->getNome()?>"/>
                     </div>
@@ -60,7 +60,7 @@ $projetoEquipe = $projeto->getEquipe() != null ? $projeto->getEquipe()->getId() 
             </div>
             <div class="row">
                 <div class="form-group">
-                    <div class="col-md-3" style="padding-left: 0px;">
+                    <div class="col-md-3">
                         <label>Data de Início</label>
                         <input type="date" name="dataInicial" id="dataInicial" class="form-control" value="<?=$projeto->getDataInicio()?>"/>
                     </div>

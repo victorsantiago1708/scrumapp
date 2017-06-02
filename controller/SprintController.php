@@ -74,4 +74,19 @@ class SprintController extends ControllerAbstract
     public function novo(){
 
     }
+
+    public function atualizaStatusSprint(){
+        if(isset(HttpRequest::$params['id']) && HttpRequest::$params['id']!=""){
+            $sprint = Sprint::get(HttpRequest::$params['id']);
+            $sprint->setStatus(HttpRequest::$params['status']);
+            $sprint->setResponsaveis($sprint->getResponsaveis());
+
+            if($sprint->save()){
+                echo json_encode(["result" => true]);
+            }else{
+                echo json_encode(["result" => false]);
+            }
+        }
+
+    }
 }

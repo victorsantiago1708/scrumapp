@@ -11,24 +11,17 @@ $projetos = View::$params["projetos"];
 <div class="container">
     <div class="row">
         <div class="col-md-12 pull-left">
-            <h1 style="border-bottom: 1px dotted #ccc;margin-bottom: 20px;">Projetos</h1>
-        </div>
-    </div>
-    <div class="row" style="margin-bottom: 20px;">
-        <div class="col-md-5" style="vertical-align: 10px;">
-            <a href="/scrumapp/projeto/novo" class="btn btn-primary">
-                Novo projeto <i class="fa fa-cubes"></i>
-            </a>
+            <h1 style="border-bottom: 1px dotted #ccc;margin-bottom:20px;padding-bottom: 10px;">Projetos
+                <a href="/scrumapp/projeto/novo" class="btn btn-primary">
+                    Novo <i class="fa fa-cubes"></i>
+                </a>
+            </h1>
         </div>
     </div>
 <?php
     if(count($projetos) <= 0) {
 ?>
-        <div class="alert alert-warning"><b>Atenção!</b> Nenhum projeto foi encontrado.
-            <a href="/scrumapp/projeto/novo" class="btn btn-primary">
-                Novo projeto <i class="fa fa-cubes"></i>
-            </a>
-        </div>
+        <div class="alert alert-warning"><b>Atenção!</b> Nenhum projeto foi encontrado.</div>
 <?php } ?>
     <div class="row">
         <div class="col-md-12">

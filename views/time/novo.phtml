@@ -9,13 +9,13 @@ $membros = ($equipe->getId() != null) ? $equipe->getMembros() : array();
 
 <div class="container">
     <div class="row">
-        <h1 style="border-bottom: 1px dotted #ccc;margin-bottom: 20px;"><?=($equipe->getId()!=null) ? 'Edita Time' : 'Novo Time' ?></h1>
-    </div>
-    <div class="row" style="margin-bottom: 20px;">
-        <div class="col-md-5" style="padding-left:0px;">
-            <a href="/scrumapp/time/" class="btn btn-warning">
-                Voltar <i class="fa fa-arrow-left"></i>
-            </a>
+        <div class="col-md-12">
+            <h1 style="border-bottom: 1px dotted #ccc;margin-bottom: 20px;padding-bottom: 10px;">
+                <?=($equipe->getId()!=null) ? 'Edita Time' : 'Novo Time'?>
+                <a href="/scrumapp/time/" class="btn btn-warning">
+                    Voltar <i class="fa fa-arrow-left"></i>
+                </a>
+            </h1>
         </div>
     </div>
     <?php if(count(View::$errors) > 0){ ?>
@@ -33,55 +33,55 @@ $membros = ($equipe->getId() != null) ? $equipe->getMembros() : array();
     ?>
     <div class="alert alert-success hide alertasucesso">Projeto salvo com sucesso!</div>
     <div class="row">
-        <form method="post" action="/scrumapp/time/save" name="formTime" id="formTime">
-            <input type="hidden" name="id" id="id" value="<?=($equipe!=null) ? $equipe->getId() : ''?>"/>
-            <div class="row" style="margin-bottom: 10px">
-                <div class="form-group" >
-                    <div class="col-md-3">
-                        <label>Nome</label>
-                        <input type="text" name="nome" id="nome" class="form-control" value="<?=$equipe!=''?$equipe->getNome():'';?>"/>
-                    </div>
-                    <div class="col-md-3">
-                        <label>Categoria</label>
-                        <input type="text" name="categoria" id="categoria" class="form-control" value="<?=$equipe!=''?$equipe->getCategoria():'';?>"/>
+        <div class="col-md-12">
+            <form method="post" action="/scrumapp/time/save" name="formTime" id="formTime">
+                <input type="hidden" name="id" id="id" value="<?=($equipe!=null) ? $equipe->getId() : ''?>"/>
+                <div class="row" style="margin-bottom: 10px">
+                    <div class="form-group" >
+                        <div class="col-md-3">
+                            <label>Nome</label>
+                            <input type="text" name="nome" id="nome" class="form-control" value="<?=$equipe!=''?$equipe->getNome():'';?>"/>
+                        </div>
+                        <div class="col-md-3">
+                            <label>Categoria</label>
+                            <input type="text" name="categoria" id="categoria" class="form-control" value="<?=$equipe!=''?$equipe->getCategoria():'';?>"/>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-md-6">
-
-                    <label>Membros</label><br/>
-                    <table class="table table-responsive table-bordered">
-                        <thead>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label>Membros</label><br/>
+                        <table class="table table-responsive table-bordered">
+                            <thead>
                             <tr>
                                 <th>Usuário</th>
                                 <th>&nbsp;</th>
                             </tr>
-                        </thead>
-                        <tbody>
-                        <?php
-                        foreach ($usuarios as $usuario):
+                            </thead>
+                            <tbody>
+                            <?php
+                            foreach ($usuarios as $usuario):
+                                ?>
+                                <tr>
+                                    <td><?=$usuario->getNome();?></td>
+                                    <td><input type="checkbox" value="<?=$usuario->getId();?>" name="membros[]" <?=(in_array($usuario, $membros)) ? "checked": ""?>/></td>
+                                </tr>
+                                <?php
+                            endforeach;
                             ?>
-                            <tr>
-                                <td><?=$usuario->getNome();?></td>
-                                <td><input type="checkbox" value="<?=$usuario->getId();?>" name="membros[]" <?=(in_array($usuario, $membros)) ? "checked": ""?>/></td>
-                            </tr>
-                        <?php
-                        endforeach;
-                        ?>
-                        </tbody>
-                    </table>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-md-3" style="padding-left: 0px;">
-                    <label style="vertical-align: 30px">&nbsp;</label>
-                    <button class="btn btn-primary saveProjeto" type="submit">
-                        Salvar <i class="fa fa-check"></i>
-                    </button>
+                <div class="row">
+                    <div class="col-md-3">
+                        <button class="btn btn-primary saveProjeto" type="submit">
+                            Salvar <i class="fa fa-check"></i>
+                        </button>
+                    </div>
                 </div>
-            </div>
-        </form>
+            </form>
+        </div>
     </div>
 
 </div>
