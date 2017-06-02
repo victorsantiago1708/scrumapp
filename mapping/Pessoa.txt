@@ -1,0 +1,6 @@
+class Exemplo{
+    $nome = "String";
+    $peso = "Integer";
+    $dataNascimento = "Date";
+    $id = "Long";
+}

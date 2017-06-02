@@ -60,6 +60,7 @@
 
 .sprint{
     border: 1px solid #cf0600;
+    border-radius: 6px;
     margin-bottom: 8px;
     width: 100%;
     height: auto;
