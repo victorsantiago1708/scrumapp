@@ -1,4 +1,4 @@
-class Exemplo{
+class Pessoa{
     $nome = "String";
     $peso = "Integer";
     $dataNascimento = "Date";
