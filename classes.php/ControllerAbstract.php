@@ -22,4 +22,10 @@ class ControllerAbstract
         header("location: $link");
     }
 
+    public function flashClear(){
+        View::$msgsSucesso = array();
+        View::$params = array();
+        View::$errors = array();
+    }
+
 }

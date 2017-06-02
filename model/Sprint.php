@@ -16,26 +16,44 @@ class Sprint extends Model
             return false;
         }
 
-        if($this->id == null){
-            $sql = "Insert into sprint (nome, descricao, status, projetoId) 
-                      values ('{$this->nome}', '{$this->descricao}', '{$this->status}', {$this->getProjetoId()}";
-        }else{
-            $sql = "Update sprint set nome = '{$this->nome}', descricao = '{$this->descricao}', status = '{$this->status}', projetoId = {$this->getProjetoId()} where id = {$this->id}";
+        try {
+            Datasource::getInstance()->beginTransaction();
+
+            if ($this->id == null) {
+                $sql = "Insert into sprint (nome, descricao, status, projetoId) 
+                          values ('{$this->nome}', '{$this->descricao}', '{$this->status}', {$this->getProjetoId()}";
+            } else {
+                $sql = "Update sprint set nome = '{$this->nome}', descricao = '{$this->descricao}', status = '{$this->status}', projetoId = {$this->getProjetoId()} where id = {$this->id}";
+            }
+
+            $query = Datasource::getInstance()->prepare($sql);
+            $query->execute();
+
+            Datasource::getInstance()->commit();
+
+            return true;
+        }catch (Exception $e){
+            Datasource::getInstance()->rollBack();
+            return false;
         }
-
-        $query = Datasource::getInstance()->prepare($sql);
-        $query->execute();
-
-        return $query->rowCount() > 0;
 
     }
 
     public function delete(){
-        $sql = "DELETE FROM sprint WHERE id = :id";
-        $stmt = Datasource::getInstance()->prepare( $sql );
-        $stmt->bindParam( ':id', $this->getId() );
-        $result = $stmt->execute();
-        return $stmt->rowCount() > 0;
+
+        try{
+            Datasource::getInstance()->beginTransaction();
+            $sql = "DELETE FROM sprint WHERE id = :id";
+            $stmt = Datasource::getInstance()->prepare( $sql );
+            $stmt->bindParam( ':id', $this->getId() );
+            $result = $stmt->execute();
+            Datasource::getInstance()->commit();
+            return true;
+        }catch (Exception $e){
+            Datasource::getInstance()->rollBack();
+            return false;
+        }
+
     }
 
     /**

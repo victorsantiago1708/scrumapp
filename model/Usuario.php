@@ -50,27 +50,43 @@ class Usuario extends Model
 
         $this->beforeInsert();
 
-        if($this->id == null){
-            $sql = "Insert into usuario (nome, login, senha, usuarioTipo, logado) 
+        try{
+            Datasource::getInstance()->beginTransaction();
+
+            if($this->id == null){
+                $sql = "Insert into usuario (nome, login, senha, usuarioTipo, logado) 
                       values ('{$this->nome}', '{$this->login}', '{$this->senha}', '{$this->usuarioTipo}'), {$this->logado}";
-        }else{
-            $sql = "Update usuario set nome = '{$this->nome}', login = '{$this->login}', senha = '{$this->senha}', usuarioTipo = '{$this->usuarioTipo}',
+            }else{
+                $sql = "Update usuario set nome = '{$this->nome}', login = '{$this->login}', senha = '{$this->senha}', usuarioTipo = '{$this->usuarioTipo}',
                       ultimoAcesso = '{$this->ultimoAcesso}', logado = {$this->logado} where id = {$this->id}";
+            }
+
+            $query = Datasource::getInstance()->prepare($sql);
+            $query->execute();
+
+            Datasource::getInstance()->commit();
+            return true;
+        }catch (Exception $e){
+            Datasource::getInstance()->rollBack();
+            return false;
         }
 
-        $query = Datasource::getInstance()->prepare($sql);
-        $query->execute();
-
-        return $query->rowCount() > 0;
 
     }
 
     public function delete(){
-        $sql = "DELETE FROM usuario WHERE id = :id";
-        $stmt = Datasource::getInstance()->prepare( $sql );
-        $stmt->bindParam( ':id', $this->getId() );
-        $result = $stmt->execute();
-        return $stmt->rowCount() > 0;
+        try{
+            Datasource::getInstance()->beginTransaction();
+            $sql = "DELETE FROM usuario WHERE id = :id";
+            $stmt = Datasource::getInstance()->prepare( $sql );
+            $stmt->bindParam( ':id', $this->getId() );
+            $result = $stmt->execute();
+            Datasource::getInstance()->commit();
+            return true;
+        }catch (Exception $e){
+            Datasource::getInstance()->rollBack();
+            return false;
+        }
     }
 
     public static function get($id){

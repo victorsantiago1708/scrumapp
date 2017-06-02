@@ -55,9 +55,9 @@ $times = View::$params["times"];
                             <button class="btn btn-primary">
                                 <i class="fa fa-cubes"></i>
                             </button>
-                            <button class="btn btn-danger">
+                            <a href="#" id="<?=$time->getId();?>" class="btn btn-danger delete">
                                 <i class="fa fa-trash"></i>
-                            </button>
+                            </a>
 
                         </td>
                     </tr>
@@ -71,3 +71,5 @@ $times = View::$params["times"];
         }
     ?>
 </div>
+
+<script src="<?=ApplicationPHP::$path.'/app/assets/javascript/time/time.js'?>"></script>

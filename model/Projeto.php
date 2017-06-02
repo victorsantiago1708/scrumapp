@@ -20,6 +20,14 @@ class Projeto extends Model
         return Model::getModel($id, "Projeto");
     }
 
+    public static function getByEquipe($equipe){
+        $sql = "Select * from projeto where equipe = {$equipe->getId()}";
+        $result = Datasource::getInstance()->query( $sql );
+        $rows = $result->fetchAll( PDO::FETCH_ASSOC );
+        $projetos = Model::create($rows, "Projeto");
+        return isset($projetos[0]) ? $projetos[0] : null;
+    }
+
     public static function findAll(){
         return Model::findAllModel("Projeto");
     }
@@ -41,32 +49,54 @@ class Projeto extends Model
             return false;
         }
 
-        if($this->id == null){
-            $sql = "Insert into projeto (nome, descricao, status, equipe, dataInicio, dataTermino) 
-                      values ('{$this->nome}', '{$this->descricao}', '{$this->status}', {$this->equipe->getId()}, '{$this->dataInicio}', '{$this->dataTermino}')";
-        }else{
-            $sql = "Update projeto set nome = '{$this->nome}', descricao = '{$this->descricao}', status = '{$this->status}', equipe = {$this->equipe->getId()}, dataInicio = '{$this->dataInicio}',
+        try{
+            Datasource::getInstance()->beginTransaction();
+
+            $equipe = Equipe::get($this->equipe);
+
+            if($this->id == null){
+                $sql = "Insert into projeto (nome, descricao, status, equipe, dataInicio, dataTermino) 
+                      values ('{$this->nome}', '{$this->descricao}', '{$this->status}', {$equipe->getId()}, '{$this->dataInicio}', '{$this->dataTermino}')";
+            }else{
+                $sql = "Update projeto set nome = '{$this->nome}', descricao = '{$this->descricao}', status = '{$this->status}', equipe = {$equipe->getId()}, dataInicio = '{$this->dataInicio}',
                       dataTermino = '{$this->dataTermino}' where id = {$this->id}";
+            }
+
+            $query = Datasource::getInstance()->prepare($sql);
+            $query->execute();
+
+            Datasource::getInstance()->commit();
+
+            return true;
+        }catch (Exception $e){
+            Datasource::getInstance()->rollBack();
+            return false;
         }
-
-        $query = Datasource::getInstance()->prepare($sql);
-        $query->execute();
-
-        return $query->rowCount() > 0;
 
     }
 
     public function delete(){
+        try{
+            Datasource::getInstance()->beginTransaction();
 
-        foreach ($this->getSprints() as $key => $val){
-            $val->delete();
+            if(count($this->getSprints()) > 0){
+                foreach ($this->getSprints() as $key => $val){
+                    $val->delete();
+                }
+            }
+
+            $sql = "DELETE FROM projeto WHERE id = :id";
+            $stmt = Datasource::getInstance()->prepare( $sql );
+            $stmt->bindParam( ':id', $this->getId() );
+            $result = $stmt->execute();
+
+            Datasource::getInstance()->commit();
+            return true;
+        }catch (Exception $e){
+            Datasource::getInstance()->rollBack();
+            return false;
         }
 
-        $sql = "DELETE FROM projeto WHERE id = :id";
-        $stmt = Datasource::getInstance()->prepare( $sql );
-        $stmt->bindParam( ':id', $this->getId() );
-        $result = $stmt->execute();
-        return $stmt->rowCount() > 0;
     }
 
     /**
@@ -106,7 +136,7 @@ class Projeto extends Model
      */
     public function getSprints()
     {
-        $sql = "Select * from sprint where projetoId = {$this->getId()}";
+        $sql = "Select * from sprint where projeto_id = {$this->getId()}";
         $result = Datasource::getInstance()->query( $sql );
         $rows = $result->fetchAll( PDO::FETCH_ASSOC );
         return Model::create($rows, "Sprint");
@@ -189,7 +219,12 @@ class Projeto extends Model
      */
     public function getEquipe()
     {
-        return $this->equipe;
+        if($this->equipe!=null){
+            return Equipe::get($this->equipe);
+        }else{
+            return null;
+        }
+
     }
 
     /**

@@ -16,23 +16,31 @@ class Equipe extends Model
             return false;
         }
 
-        if($this->id == null){
-            $sql = "Insert into `equipe` (`nome`, `categoria`) 
-                      values ('{$this->nome}', '{$this->categoria}')";
-        }else{
-            $sql = "Update `equipe` set `nome` = '{$this->nome}', `categoria` = '{$this->categoria}' where `id` = {$this->id}";
-        }
-
-        $query = Datasource::getInstance()->prepare($sql);
-        $query->execute();
-
-        if($query->rowCount() > 0){
-            if(!$this->saveMembros(self::getEquipeRecenteAdd())){
-                return false;
-            }else{
-                return true;
+        try {
+           if($this->id == null){
+               $sql = "Insert into `equipe` (`nome`, `categoria`)
+                     values ('{$this->nome}', '{$this->categoria}')";
+           }else{
+                $sql = "Update `equipe` set `nome` = '{$this->nome}', `categoria` = '{$this->categoria}' where `id` = {$this->id}";
             }
-        }else{
+
+            Datasource::getInstance()->beginTransaction();
+
+            $query = Datasource::getInstance()->prepare($sql);
+            $query->execute();
+
+            if($this->id != null){
+                $this->saveMembros($this);
+            }else{
+                $this->saveMembros(self::getEquipeRecenteAdd());
+            }
+
+            Datasource::getInstance()->commit();
+
+            return true;
+
+        } catch (Exception $e) {
+            Datasource::getInstance()->rollback();
             return false;
         }
 
@@ -42,6 +50,7 @@ class Equipe extends Model
         $sql = "Select * from equipe order by id desc limit 1";
         $result = Datasource::getInstance()->query( $sql );
         $rows = $result->fetchAll( PDO::FETCH_ASSOC );
+
         if(isset(self::create($rows, strtoupper("Equipe"))[0])){
             return self::create($rows, strtoupper("Equipe"))[0];
         }else{
@@ -56,7 +65,7 @@ class Equipe extends Model
             $query->execute();
 
             foreach ($this->membros as $membro):
-                $sql = "Insert into equipe_membros (`equipe_id`, `usuario_id`) values ({$equipe->getId()},{$membro->getId()})";
+                $sql = "Insert into equipe_membros (equipe_id, usuario_id) values ({$equipe->getId()},{$membro->getId()})";
                 $query = Datasource::getInstance()->prepare($sql);
                 $query->execute();
             endforeach;
@@ -68,20 +77,27 @@ class Equipe extends Model
     }
 
     public function delete(){
+        try{
+            Datasource::getInstance()->beginTransaction();
 
-        $sql = "DELETE FROM equipe_membros WHERE equipe_id = :id";
-        $stmt = Datasource::getInstance()->prepare( $sql );
-        $stmt->bindParam( ':id', $this->getId() );
-        $result = $stmt->execute();
-
-        if($stmt->rowCount() > 0){
-            $sql = "DELETE FROM equipe WHERE id = :id";
+            $sql = "DELETE FROM equipe_membros WHERE equipe_id = :id";
             $stmt = Datasource::getInstance()->prepare( $sql );
             $stmt->bindParam( ':id', $this->getId() );
             $result = $stmt->execute();
-        }
 
-        return $stmt->rowCount() > 0;
+            if($stmt->rowCount() > 0){
+                $sql = "DELETE FROM equipe WHERE id = :id";
+                $stmt = Datasource::getInstance()->prepare( $sql );
+                $stmt->bindParam( ':id', $this->getId() );
+                $result = $stmt->execute();
+            }
+            Datasource::getInstance()->commit();
+
+            return $stmt->rowCount() > 0;
+        }catch (Exception $e){
+            Datasource::getInstance()->rollBack();
+            return false;
+        }
     }
 
     public static function get($id){

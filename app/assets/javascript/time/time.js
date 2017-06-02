@@ -1,13 +1,16 @@
-var deleteProjeto;
+/**
+ * Created by Victor on 01/06/2017.
+ */
+var deleteTime;
 
 window.onload = function(){
 
-    $(document).delegate(".delete", "click", deleteProjeto);
+    $(document).delegate(".delete", "click", deleteTime);
 
 };
 
-deleteProjeto = function(){
-    var url = "/scrumapp/projeto/delete";
+deleteTime = function(){
+    var url = "/scrumapp/time/delete";
     var id = $(this).attr("id");
     bootbox.confirm("Deseja remover esse time?", function(result){
         if(result){
@@ -16,8 +19,9 @@ deleteProjeto = function(){
                 type: "GET",
                 data: {id: id},
                 success: function(data){
+                    console.log(data);
                     if(data == "true"){
-                        window.location="/scrumapp/projeto/index";
+                        window.location="/scrumapp/time/index";
                     }else{
                         bootbox.alert(data);
                     }

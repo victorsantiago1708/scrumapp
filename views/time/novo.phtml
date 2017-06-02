@@ -3,12 +3,13 @@
 <?php
 require_once ("views/layouts/main.phtml");
 $usuarios = View::$params["usuarios"];
-$equipe = isset(View::$params["equipe"]) ? View::$params["equipe"] : "";
+$equipe = isset(View::$params["equipe"]) ? View::$params["equipe"] : new Equipe();
+$membros = ($equipe->getId() != null) ? $equipe->getMembros() : array();
 ?>
 
 <div class="container">
     <div class="row">
-        <h1 style="border-bottom: 1px dotted #ccc;margin-bottom: 20px;">Novo Time</h1>
+        <h1 style="border-bottom: 1px dotted #ccc;margin-bottom: 20px;"><?=($equipe!=null) ? 'Edita Time' : 'Novo Time' ?></h1>
     </div>
     <div class="row" style="margin-bottom: 20px;">
         <div class="col-md-5" style="padding-left:0px;">
@@ -33,6 +34,7 @@ $equipe = isset(View::$params["equipe"]) ? View::$params["equipe"] : "";
     <div class="alert alert-success hide alertasucesso">Projeto salvo com sucesso!</div>
     <div class="row">
         <form method="post" action="/scrumapp/time/save" name="formTime" id="formTime">
+            <input type="hidden" name="id" id="id" value="<?=($equipe!=null) ? $equipe->getId() : ''?>"/>
             <div class="row" style="margin-bottom: 10px">
                 <div class="form-group" >
                     <div class="col-md-3">
@@ -62,7 +64,7 @@ $equipe = isset(View::$params["equipe"]) ? View::$params["equipe"] : "";
                             ?>
                             <tr>
                                 <td><?=$usuario->getNome();?></td>
-                                <td><input type="checkbox" value="<?=$usuario->getId();?>" name="membros[]" <?=(in_array($usuario, $equipe->getMembros())) ? "checked": ""?>/></td>
+                                <td><input type="checkbox" value="<?=$usuario->getId();?>" name="membros[]" <?=(in_array($usuario, $membros)) ? "checked": ""?>/></td>
                             </tr>
                         <?php
                         endforeach;

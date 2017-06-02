@@ -2,7 +2,9 @@
 <script src="<?=ApplicationPHP::$path.'/app/assets/javascript/projeto/projeto.js'?>"></script>
 <?php
 require_once ("views/layouts/main.phtml");
-$equipes = $this->getParams()["equipes"];
+$equipes = View::$params["equipes"];
+$projeto = isset(View::$params["projeto"]) ? View::$params["projeto"] : new Projeto();
+$projetoEquipe = $projeto->getEquipe() != null ? $projeto->getEquipe()->getId() : null;
 ?>
 
 <div class="container">
@@ -16,30 +18,31 @@ $equipes = $this->getParams()["equipes"];
             </a>
         </div>
     </div>
-    <?php if(count($this->getErrors()) > 0){ ?>
+    <?php if(count(View::$errors) > 0){ ?>
         <div class="alert alert-danger">
             <ul>
-                <?php foreach ($this->getErrors() as $error): ?>
+                <?php foreach (View::$errors as $error): ?>
                     <li><?=$error?></li>
                 <?php endforeach; ?>
             </ul>
         </div>
     <?php
-        }else if(count($this->getMsgsSucesso()) > 0 ){
+        }else if(count(View::$msgsSucesso) > 0 ){
             echo $this->getDivSuccess();
         }
     ?>
     <div class="row">
         <form method="post" action="/scrumapp/projeto/save" name="formProjeto" id="formProjeto">
+            <input type="hidden" name="id" id="id" value="<?=$projeto->getId()?>"
             <div class="row" style="margin-bottom: 10px">
                 <div class="form-group" >
-                    <div class="col-md-3">
+                    <div class="col-md-3" style="padding-left: 0px;">
                         <label>Nome</label>
-                        <input type="text" name="nome" id="nome" class="form-control"/>
+                        <input type="text" name="nome" id="nome" class="form-control" value="<?=$projeto->getNome()?>"/>
                     </div>
                     <div class="col-md-4">
                         <label>Descrição</label>
-                        <input type="text" name="descricao" id="descricao" class="form-control"/>
+                        <input type="text" name="descricao" id="descricao" class="form-control" value="<?=$projeto->getDescricao()?>"/>
                     </div>
                     <div class="col-md-4">
                         <label>Equipe</label>
@@ -47,7 +50,7 @@ $equipes = $this->getParams()["equipes"];
                             <?php
                             foreach ($equipes as $equipe):
                                 ?>
-                                <option value="<?=$equipe->getId();?>"><?=$equipe->getNome();?></option>
+                                <option <?=($equipe->getId() == $projetoEquipe) ? 'selected' : '';?> value="<?=$equipe->getId();?>"><?=$equipe->getNome()?></option>
                                 <?php
                             endforeach;
                             ?>
@@ -57,13 +60,13 @@ $equipes = $this->getParams()["equipes"];
             </div>
             <div class="row">
                 <div class="form-group">
-                    <div class="col-md-3">
+                    <div class="col-md-3" style="padding-left: 0px;">
                         <label>Data de Início</label>
-                        <input type="date" name="dataInicial" id="dataInicial" class="form-control"/>
+                        <input type="date" name="dataInicial" id="dataInicial" class="form-control" value="<?=$projeto->getDataInicio()?>"/>
                     </div>
                     <div class="col-md-3">
                         <label>Data de Término</label>
-                        <input type="date" name="dataTermino" id="dataTermino" class="form-control"/>
+                        <input type="date" name="dataTermino" id="dataTermino" class="form-control" value="<?=$projeto->getDataTermino()?>"/>
                     </div>
                     <div class="col-md-3">
                         <label style="vertical-align: 30px">&nbsp;</label>
