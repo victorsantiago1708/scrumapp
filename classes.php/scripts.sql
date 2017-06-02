@@ -49,3 +49,13 @@ create table sprint_responsaveis (
     FOREIGN KEY (sprint_id) REFERENCES sprint (id),
     FOREIGN KEY (usuario_id) REFERENCES usuario (id)
 );
+
+create table mensagem (
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    remetente INT NOT NULL,
+    destinatario INT NOT NULL,
+    mensagem TEXT(255) NOT NULL,
+    dataEnvio DATETIME NOT NULL,
+    FOREIGN KEY (remetente) REFERENCES usuario(id),
+    FOREIGN KEY (destinatario) REFERENCES usuario(id)
+);

@@ -44,6 +44,15 @@ function drag(ev) {
 function drop(ev) {
     ev.preventDefault();
     var data = ev.dataTransfer.getData("text");
-    ev.target.appendChild(document.getElementById(data));
-    attStatusSprint(data, ev.target.id);
+    var element = null;
+
+    if(ev.target.id != "andamento" && ev.target.id != "concluida" && ev.target.id != "disponivel"){
+        element = document.getElementById(ev.target.id).parentNode.id;
+    }else{
+        element = ev.target.id;
+    }
+    if(element != null){
+        ev.target.appendChild(document.getElementById(data));
+        attStatusSprint(data, element);
+    }
 }
