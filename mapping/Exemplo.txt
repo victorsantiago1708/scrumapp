@@ -1,6 +1,0 @@
-class Exemplo{
-    $nome = "String";
-    $descricao = "String";
-    $dataAtualizacao = "Date";
-    $id = "Long";
-}

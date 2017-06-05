@@ -1,0 +1,81 @@
+<?php
+function cria_arquivo($path, $file, $conteudo){
+    $myfile = fopen($path.$file, "w") or die("Unable to open file!");
+    fwrite($myfile, $conteudo);
+    fclose($myfile);
+}
+
+
+$arquivo = "model/Jogador.php";
+$classe = file_get_contents($arquivo);
+
+$patternMapClass = "/(class|\$|\@)[A-Za-z\:\$\s]+/";
+$patternMapType = "/\@[A-Za-z\:]+/";
+$patterMapAttribute = "/\\$[A-Za-z]+/";
+
+$matches = array();
+preg_match_all($patternMapClass, $classe, $matches, PREG_OFFSET_CAPTURE);
+
+function get_type_sql($tipo){
+    switch (strtolower($tipo)){
+        case "string":
+            return TypeEnum::String;
+            break;
+        case "long":
+            return TypeEnum::Long;
+            break;
+        case "int":
+            return TypeEnum::Integer;
+            break;
+        case "boolean":
+            return TypeEnum::Boolean;
+            break;
+        case "double":
+            return TypeEnum::Double;
+            break;
+    }
+}
+
+//@return String
+function create_table($table, $attributes = array()){
+    if(count($attributes) > 0){
+        $sql  = "create table $table (";
+        $sql .= "id INT unique auto_increment not null primary key,";
+        foreach ($attributes as $key => $value):
+            $sql .= $key." ".get_type_sql($value)." not null,";
+        endforeach;
+        $virgulapos = strrpos($sql, ",");
+        $sql = substr($sql, 0, $virgulapos);
+        $sql .= ");";
+        return $sql;
+    }else{
+        throw new Exception("Nenhum atributo enviado para a criação da tabela: ".$table);
+    }
+}
+
+$class = "";
+$attributes_table = array();
+
+foreach ($matches[0] as $line):
+    if($line != "" && count($line) > 0){
+        $posStringClass = strpos($line[0], "class");
+        if($posStringClass > -1){
+            $class = str_replace("class", "", trim($line[0]));
+        }else{
+            $type = "";
+            preg_match_all($patternMapType, trim($line[0]), $type, PREG_OFFSET_CAPTURE)[0];
+            $tipo = $type[0][0][0];
+            $tipo = str_replace("@Type:", "", $tipo);
+
+            $attributes = "";
+            preg_match_all($patterMapAttribute, trim($line[0]), $attributes, PREG_OFFSET_CAPTURE)[0];
+            $attribute = $attributes[0][0][0];
+            $attribute = str_replace("$", "", $attribute);
+            $attributes_table[$attribute] = $tipo;
+        }
+    }else{
+        throw new Exception("Arquivo: ".$arquivo." fora do padrão!");
+    }
+endforeach;
+
+echo create_table($class, $attributes_table);

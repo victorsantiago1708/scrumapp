@@ -1,6 +1,0 @@
-class Pessoa{
-    $nome = "String";
-    $peso = "Integer";
-    $dataNascimento = "Date";
-    $id = "Long";
-}

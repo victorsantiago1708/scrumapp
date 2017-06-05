@@ -8,4 +8,6 @@ class TypeEnum
     const String = "VARCHAR(255)";
     const Integer = "INT";
     const Text = "TEXT(255)";
+    const Boolean = "BOOLEAN";
+    const Double = "DOUBLE";
 }
