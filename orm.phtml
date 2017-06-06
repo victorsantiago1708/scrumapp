@@ -56,9 +56,16 @@ function create_table($table, $attributes = array()){
 $class = "";
 $attributes_table = array();
 
+//@return void
 foreach ($matches[0] as $line):
     if($line != "" && count($line) > 0){
         $posStringClass = strpos($line[0], "class");
+        $typeAnotation = strpos($line[0], "@Type");
+
+        if($typeAnotation == -1){
+            throw new Exception("Arquivo: ".$arquivo." fora do padrão!");
+        }
+
         if($posStringClass > -1){
             $class = str_replace("class", "", trim($line[0]));
         }else{
