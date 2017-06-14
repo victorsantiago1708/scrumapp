@@ -33,46 +33,63 @@ class ORM
         preg_match_all($patternMapClass, $classeContent, $matches, PREG_OFFSET_CAPTURE);
 
         foreach ($matches[0] as $line):
-            if($line != "" && count($line) > 0){
+            if ($line != "" && count($line) > 0) {
                 $posStringClass = strpos($line[0], "class");
-                if($posStringClass > -1){
+                if ($posStringClass > -1) {
                     $class = str_replace("class", "", trim($line[0]));
-                }else{
-                    $type = "";
-                    preg_match_all($patternMapType, trim($line[0]), $type, PREG_OFFSET_CAPTURE)[0];
-                    $tipo = $type[0][0][0];
-                    $tipoAtributo = trim(substr($tipo, strpos($tipo, ":")+1, strlen($tipo)));
-                    $modificador = trim(substr($tipo, 1, strpos($tipo, ":")-1));
-                    $attributes = "";
-                    preg_match_all($patterMapAttribute, trim($line[0]), $attributes, PREG_OFFSET_CAPTURE)[0];
-                    $attribute = $attributes[0][0][0];
-                    $attribute = str_replace("$", "", $attribute);
+                } else {
 
-                    if($modificador != "Type"){
-                        if(array_key_exists($this->class, $this->juncoes)){
-                            if(array_key_exists($modificador, $this->juncoes[$this->class])){
-                                array_push($this->juncoes[$this->class][$modificador], [$attribute => $tipoAtributo]);
-                            }else{
+                    try{
+                        $type = array();
+                        $tipo = "";
+                        preg_match_all($patternMapType, trim($line[0]), $type, PREG_OFFSET_CAPTURE)[0];
+                        $tipo = $type[0][0][0];
+
+                        if($tipo == "")
+                            throw new Exception("Arquivo {$this->class}.php fora do padrão.");
+
+                        if(strpos($tipo, ":") == false)
+                            throw new Exception("Arquivo {$this->class}.php fora do padrão.");
+
+                        $tipoAtributo = trim(substr($tipo, strpos($tipo, ":") + 1, strlen($tipo)));
+                        $modificador = trim(substr($tipo, 1, strpos($tipo, ":") - 1));
+                        $attributes = "";
+                        preg_match_all($patterMapAttribute, trim($line[0]), $attributes, PREG_OFFSET_CAPTURE)[0];
+                        $attribute = $attributes[0][0][0];
+
+                        if($attribute == "")
+                            throw new Exception("Arquivo {$this->class}.php fora do padrão.");
+
+                        $attribute = str_replace("$", "", $attribute);
+
+                        if ($modificador != "Type") {
+                            if (array_key_exists($this->class, $this->juncoes)) {
+                                if (array_key_exists($modificador, $this->juncoes[$this->class])) {
+                                    array_push($this->juncoes[$this->class][$modificador], [$attribute => $tipoAtributo]);
+                                } else {
+                                    $this->juncoes[$this->class] = [$modificador => array()];
+                                    array_push($this->juncoes[$this->class][$modificador], [$attribute => $tipoAtributo]);
+                                }
+                            } else {
                                 $this->juncoes[$this->class] = [$modificador => array()];
                                 array_push($this->juncoes[$this->class][$modificador], [$attribute => $tipoAtributo]);
                             }
-                        }else{
-                            $this->juncoes[$this->class] = [$modificador => array()];
-                            array_push($this->juncoes[$this->class][$modificador], [$attribute => $tipoAtributo]);
+                        } else {
+                            $this->attributes[$attribute] = $tipoAtributo;
                         }
-                    }else{
-                        $this->attributes[$attribute] = $tipoAtributo;
+                    }catch(Exception $e) {
+                        echo $e->getMessage()."<br/>";
                     }
                 }
-            }else{
-                throw new ArquivoNaoEncontradoException("Arquivo: ".$class." fora do padrão!");
+            } else {
+                throw new Exception("Arquivo: " . $this->class . ".php fora do padrão!");
             }
         endforeach;
 
         try{
             self::create_table();
-        }catch (AtributosNulosException $atributosNulosException){
-            throw $atributosNulosException;
+        } catch(Exception $e){
+            echo $e->getMessage()."<br/>";
         }
     }
 
@@ -80,11 +97,11 @@ class ORM
         if(count($this->attributes) > 0){
             $sql  = "create table IF NOT EXISTS {$this->class} (";
             if(!array_key_exists('id', $this->attributes))
-                $sql .= "id INT unique auto_increment not null primary key,";
+                $sql .= self::primary_key()." ,";
 
             foreach ($this->attributes as $key => $value):
                 if($key == "id"){
-                    $sql .= "id ".self::get_type_sql($value)." not null auto_increment primary key,";
+                    $sql .= self::primary_key()." ,";
                 }else{
                     $sql .= $key." ".self::get_type_sql($value)." not null,";
                 }
@@ -94,8 +111,14 @@ class ORM
             $virgulapos = strrpos($sql, ",");
             $sql = substr($sql, 0, $virgulapos);
             $sql .= ");\n";
-            $query = Datasource::getInstance()->prepare($sql);
-            $query->execute();
+
+            try{
+                $query = Datasource::getInstance()->prepare($sql);
+                $query->execute();
+            }catch(Exception $e){
+                throw $e;
+            }
+
         }else{
             throw new AtributosNulosException("Nenhum atributo enviado para a criação da tabela: ".$this->class);
         }
@@ -154,7 +177,7 @@ class ORM
             foreach ($colunas as $colKey => $atributos){
                 foreach ($atributos as $key => $value){
                     $sql .= "CREATE TABLE IF NOT EXISTS {$table}_{$key} (";
-                    $sql .= "id int not null auto_increment primary key,";
+                    $sql .= self::primary_key()." ,";
                     $sql .= "{$table}_id int not null,";
                     if(!self::isPropertie($value)){
                         $sql .= "{$table}_{$value} int not null,";
@@ -219,5 +242,19 @@ class ORM
                 break;
         }
         return $result;
+    }
+
+    private function primary_key(){
+        $key = "";
+
+        if(Config::DRIVE == "pgsql"){
+            $key = "id Serial not null primary key";
+        }else if(Config::DRIVE == "mysql"){
+            $key = "id int not null auto_increment primary key";
+        }else{
+            $key = "id int not null";
+        }
+
+        return $key;
     }
 }

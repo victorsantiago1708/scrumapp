@@ -16,7 +16,7 @@ class Sprint extends Model
     private $status = "DISPONIVEL";
 
     //@BelongsTo:Projeto
-    private $projetoId = null;
+    private $projeto = null;
 
     //@HasMany:Usuario
     private $responsaveis = array();
@@ -157,14 +157,14 @@ class Sprint extends Model
         $this->status = $status;
     }
 
-    public function getProjeto_id()
+    public function getProjeto()
     {
-        return $this->projetoId;
+        return $this->projeto;
     }
 
-    public function setProjeto_id($projetoID)
+    public function setProjeto($projeto)
     {
-        $this->projetoId = $projetoID;
+        $this->projeto = $projeto;
     }
 
     public function getResponsaveis()
