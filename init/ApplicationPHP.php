@@ -28,15 +28,27 @@ class ApplicationPHP
     public function runApp(){
         self::$http = new HttpRequest();
 		self::$path = dirname($_SERVER['PHP_SELF']);
-		self::resources();
+		self::load_entidades();
+		self::load_resources();
     }
 
-	static function resources(){
+	private final static function load_resources(){
 		$uriResources = "app/assets/resources/resources.php";
 		if(file_exists($uriResources)){
 			require_once( $uriResources );
 		}
 	}
+
+	private final static function load_entidades(){
+        $Orm = new ORM();
+        try{
+            $Orm->map_classes();
+        }catch (ArquivoNaoEncontradoException $arquivoNaoEncontradoException){
+            echo "<br/><b>".$arquivoNaoEncontradoException->getMessage()."</b>";
+        }catch (AtributosNulosException $atributosNulosException){
+            echo "<br/><b>".$atributosNulosException->getMessage()."</b>";
+        }
+    }
 	
 	
 }

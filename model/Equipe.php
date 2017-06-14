@@ -3,9 +3,15 @@
 
 class Equipe extends Model
 {
+    //@Type:Long
     private $id = null;
+    
+    //@Type:String
     private $nome = "";
+    
     private $membros = array();
+    
+    //@Type:String
     private $categoria = "";
 
 
@@ -108,41 +114,26 @@ class Equipe extends Model
         return Model::findAllModel("Equipe");
     }
 
-    /**
-     * @return null
-     */
     public function getId()
     {
         return $this->id;
     }
 
-    /**
-     * @param null $id
-     */
     public function setId($id)
     {
         $this->id = $id;
     }
 
-    /**
-     * @return string
-     */
     public function getNome()
     {
         return $this->nome;
     }
 
-    /**
-     * @param string $nome
-     */
     public function setNome($nome)
     {
         $this->nome = $nome;
     }
 
-    /**
-     * @return array
-     */
     public function getMembros()
     {
         $sql = "Select * from equipe_membros where equipe_id = {$this->getId()}";
@@ -168,25 +159,16 @@ class Equipe extends Model
         return json_encode($membros);
     }
 
-    /**
-     * @param array $membros
-     */
     public function setMembros($membros)
     {
         $this->membros = $membros;
     }
 
-    /**
-     * @return string
-     */
     public function getCategoria()
     {
         return $this->categoria;
     }
 
-    /**
-     * @param string $categoria
-     */
     public function setCategoria($categoria)
     {
         $this->categoria = $categoria;

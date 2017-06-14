@@ -2,11 +2,22 @@
 
 class Sprint extends Model
 {
+
+    //@Type:Long
     private $id = null;
+
+    //@Type:String
     private $nome = "";
+
+    //@Type:String
     private $descricao = "";
+
+    //@Type:String
     private $status = "DISPONIVEL";
+
+    //@Type:Long
     private $projeto_id = null;
+
     private $responsaveis = array();
 
     public static function get($id){
@@ -105,89 +116,56 @@ class Sprint extends Model
 
     }
 
-    /**
-     * @return null
-     */
     public function getId()
     {
         return $this->id;
     }
 
-    /**
-     * @param null $id
-     */
     public function setId($id)
     {
         $this->id = $id;
     }
 
-    /**
-     * @return string
-     */
     public function getNome()
     {
         return $this->nome;
     }
 
-    /**
-     * @param string $nome
-     */
     public function setNome($nome)
     {
         $this->nome = $nome;
     }
 
-    /**
-     * @return string
-     */
     public function getDescricao()
     {
         return $this->descricao;
     }
 
-    /**
-     * @param string $descricao
-     */
     public function setDescricao($descricao)
     {
         $this->descricao = $descricao;
     }
 
-    /**
-     * @return string
-     */
     public function getStatus()
     {
         return $this->status;
     }
 
-    /**
-     * @param string $status
-     */
     public function setStatus($status)
     {
         $this->status = $status;
     }
 
-    /**
-     * @return null
-     */
     public function getProjeto_id()
     {
         return $this->projeto_id;
     }
 
-    /**
-     * @param null $projetoID
-     */
     public function setProjeto_id($projetoID)
     {
         $this->projeto_id = $projetoID;
     }
 
-    /**
-     * @return array
-     */
     public function getResponsaveis()
     {
         $sql = "Select * from sprint_responsaveis where sprint_id = {$this->getId()}";
@@ -210,9 +188,6 @@ class Sprint extends Model
         return $responsaveisJSON;
     }
 
-    /**
-     * @param array $responsaveis
-     */
     public function setResponsaveis($responsaveis)
     {
         $this->responsaveis = $responsaveis;

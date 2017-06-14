@@ -1,6 +1,5 @@
 <?php
 
-require_once ("model/Sprint.php");
 
 abstract class Model
 {
