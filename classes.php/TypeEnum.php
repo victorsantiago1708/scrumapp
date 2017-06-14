@@ -10,4 +10,5 @@ class TypeEnum
     const Text = "TEXT(255)";
     const Boolean = "BOOLEAN";
     const Double = "DOUBLE";
+    const Byte = "Byte";
 }

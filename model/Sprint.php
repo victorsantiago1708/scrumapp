@@ -15,9 +15,10 @@ class Sprint extends Model
     //@Type:String
     private $status = "DISPONIVEL";
 
-    //@Type:Long
-    private $projeto_id = null;
+    //@BelongsTo:Projeto
+    private $projetoId = null;
 
+    //@HasMany:Usuario
     private $responsaveis = array();
 
     public static function get($id){
@@ -27,7 +28,7 @@ class Sprint extends Model
     public function save( ){
         $sql = "";
 
-        if($this->nome == "" || $this->descricao == "" || $this->status == "" || $this->projeto_id == null ){
+        if($this->nome == "" || $this->descricao == "" || $this->status == "" || $this->projetoId == null ){
             return false;
         }
 
@@ -158,12 +159,12 @@ class Sprint extends Model
 
     public function getProjeto_id()
     {
-        return $this->projeto_id;
+        return $this->projetoId;
     }
 
     public function setProjeto_id($projetoID)
     {
-        $this->projeto_id = $projetoID;
+        $this->projetoId = $projetoID;
     }
 
     public function getResponsaveis()

@@ -8,12 +8,12 @@ class Equipe extends Model
     
     //@Type:String
     private $nome = "";
-    
+
+    //@HasMany:Usuario
     private $membros = array();
     
     //@Type:String
     private $categoria = "";
-
 
     public function save( ){
         $sql = "";

@@ -11,9 +11,10 @@ class Projeto extends Model
     //@Type:String
     private $descricao = "";
 
+    //@HasMany:Sprint
     private $sprints = Array();
 
-    //@Type:Long
+    //@BelongsTo:Equipe
     private $equipe = null;
 
     //@Type:String

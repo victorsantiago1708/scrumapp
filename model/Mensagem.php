@@ -5,7 +5,7 @@ class Mensagem extends Model
     //@Type:Long
     private $id = null;
 
-    //@Type:Long
+    //@BelongsTo:Usuario
     private $remetente = null;
 
     //@Type:Long
