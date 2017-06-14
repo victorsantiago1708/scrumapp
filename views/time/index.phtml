@@ -4,6 +4,7 @@
 require_once ("views/layouts/main.phtml");
 
 $times = View::$params["times"];
+$projetos = isset(View::$params["projetos"]) && !empty(View::$params["projetos"]) ? View::$params["projetos"] : [];
 ?>
 
 <div class="container">
@@ -48,13 +49,12 @@ $times = View::$params["times"];
                                 <a href="/scrumapp/time/edit?id=<?=$time->getId();?>" class="btn btn-primary">
                                     <i class="fa fa-edit"></i>
                                 </a>
-                                <button class="btn btn-primary">
+                                <button data-id="<?=$time->getId();?>" class="btn btn-primary attribProjeto">
                                     <i class="fa fa-cubes"></i>
                                 </button>
-                                <a href="#" id="<?=$time->getId();?>" class="btn btn-danger delete">
+                                <a href="#" data-id="<?=$time->getId();?>" class="btn btn-danger delete">
                                     <i class="fa fa-trash"></i>
                                 </a>
-
                             </td>
                         </tr>
                         <?php
@@ -67,6 +67,47 @@ $times = View::$params["times"];
     <?php
         }
     ?>
+</div>
+
+<div class="modal fade" id="projetos" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Projetos</h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger erros hide"></div>
+                <div class="alert alert-danger mensagens hide"></div>
+                <div class="row">
+                    <table class="table table-responsive table-bordered" id="tableProjetos">
+                        <thead>
+                            <tr>
+                                <th>Nome</th>
+                                <th>Descrição</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php 
+                                foreach ($projetos as $key => $value) {
+                            ?>
+                                    <tr>
+                                        <td><?=$value->getNome();?></td>
+                                        <td><?=$value->getDescricao();?></td>
+                                    </tr>
+                            <?php
+                                }
+                            ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar <i class="fa fa-times"></i></button>
+                <button type="button" class="btn btn-primary criar">Confirmar <i class="fa fa-check"></i></button>
+            </div>
+        </div>
+    </div>
 </div>
 
 <script src="<?=ApplicationPHP::$path.'/app/assets/javascript/time/time.js'?>"></script>

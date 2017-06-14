@@ -9,7 +9,7 @@ class TimeController extends ControllerAbstract
     public function index(){
         parent::flashClear();
         $times = Equipe::findAll();
-        $view = new View("views/time/index.phtml", ["times" => $times]);
+        $view = new View("views/time/index.phtml", ["times" => $times, "projetos" => Projeto::findAll()]);
         $view->showContents();
     }
 
@@ -104,5 +104,36 @@ class TimeController extends ControllerAbstract
                 return false;
             }
         }
+    }
+
+    // public function buscaProjetos(){
+    //     $projetos = [];
+
+    //     foreach (Projeto::findAll() as $key => $value) {
+    //         array_push($projetos, ['id' => $value->getId(), 'nome' => $value->getNome()]);
+    //     }
+
+    //     echo json_encode($projetos);
+        
+    // }
+
+    public function atribuiProjeto(){
+        parent::flashClear();
+        if(isset(HttpRequest::$params["id"]) && HttpRequest::$params["id"]!=""){
+            $time = Equipe::get(HttpRequest::$params["id"]);
+            $projeto = Projeto::getByEquipe($time);
+
+            if($projeto != null){
+                echo "Não foi possível atualizar o registro, pois está vinculado a um projeto em andamento!";
+                return false;
+            }
+
+            if($time->delete()){
+                echo "true";
+            }else{
+                echo "false";
+                return false;
+            }
+        }    
     }
 }

@@ -2,10 +2,19 @@
 
 class Mensagem extends Model
 {
+    //@Type:Long
     private $id = null;
+
+    //@Type:Long
     private $remetente = null;
+
+    //@Type:Long
     private $destinatario = null;
+
+    //@Type:String
     private $mensagem = "";
+
+    //@Type:Date
     private $dataEnvio = null;
 
     public static function get($id){

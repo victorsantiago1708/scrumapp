@@ -2,13 +2,27 @@
 
 class Projeto extends Model
 {
+    //@Type:Long
     private $id = null;
+
+    //@Type:String
     private $nome = "";
+
+    //@Type:String
     private $descricao = "";
+
     private $sprints = Array();
+
+    //@Type:Long
     private $equipe = null;
+
+    //@Type:String
     private $status = "ANDAMENTO";
+
+    //@Type:Date
     private $dataInicio = null;
+
+    //@Type:Date
     private $dataTermino = null;
 
     public function __construct( )
@@ -120,41 +134,26 @@ class Projeto extends Model
 
     }
 
-    /**
-     * @return string
-     */
     public function getNome()
     {
         return $this->nome;
     }
 
-    /**
-     * @param string $nome
-     */
     public function setNome($nome)
     {
         $this->nome = $nome;
     }
 
-    /**
-     * @return string
-     */
     public function getDescricao()
     {
         return $this->descricao;
     }
 
-    /**
-     * @param string $descricao
-     */
     public function setDescricao($descricao)
     {
         $this->descricao = $descricao;
     }
 
-    /**
-     * @return array
-     */
     public function getSprints()
     {
         $sql = "Select * from sprint where projeto_id = {$this->getId()}";
@@ -163,81 +162,51 @@ class Projeto extends Model
         return Model::create($rows, "Sprint");
     }
 
-    /**
-     * @param array $sprints
-     */
     public function setSprints($sprints)
     {
         $this->sprints = $sprints;
     }
 
-    /**
-     * @return string
-     */
     public function getStatus()
     {
         return $this->status;
     }
 
-    /**
-     * @param string $status
-     */
     public function setStatus($status)
     {
         $this->status = $status;
     }
 
-    /**
-     * @return null
-     */
     public function getDataInicio()
     {
         return $this->dataInicio;
     }
 
-    /**
-     * @param null $dataInicio
-     */
     public function setDataInicio($dataInicio)
     {
         $this->dataInicio = $dataInicio;
     }
 
-    /**
-     * @return null
-     */
     public function getDataTermino()
     {
         return $this->dataTermino;
     }
 
-    /**
-     * @param null $dataTermino
-     */
     public function setDataTermino($dataTermino)
     {
         $this->dataTermino = $dataTermino;
     }
 
-    /**
-     * @return null
-     */
     public function getId()
     {
         return $this->id;
     }
 
-    /**
-     * @param null $id
-     */
     public function setId($id)
     {
         $this->id = $id;
     }
 
-    /**
-     * @return null
-     */
     public function getEquipe()
     {
         if($this->equipe!=null){
@@ -248,15 +217,9 @@ class Projeto extends Model
 
     }
 
-    /**
-     * @param null $equipe
-     */
     public function setEquipe($equipe)
     {
         $this->equipe = $equipe;
     }
-
-
-
 
 }
