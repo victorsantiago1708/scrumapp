@@ -47,6 +47,8 @@ class ApplicationPHP
             echo "<br/><b>".$arquivoNaoEncontradoException->getMessage()."</b>";
         }catch (AtributosNulosException $atributosNulosException){
             echo "<br/><b>".$atributosNulosException->getMessage()."</b>";
+        }catch (TabelaNaoExisteException $tabelaNaoExisteException){
+            echo "<br/><b>".$tabelaNaoExisteException->getMessage()."</b>";
         }
     }
 	

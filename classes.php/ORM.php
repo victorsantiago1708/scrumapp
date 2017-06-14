@@ -193,7 +193,9 @@ class ORM
             $query = Datasource::getInstance()->prepare($sql);
             $query->execute();
         }catch(Exception $e){
-            throw new TabelaNaoExisteException("Tabela {$table} não existe no banco de dados");
+            if(!$e->getCode() != "42S21"){
+                throw new TabelaNaoExisteException("Tabela {$table} não existe no banco de dados");
+            }
         }
     }
 
