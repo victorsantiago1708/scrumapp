@@ -6,7 +6,12 @@
           <option name="url" value="http://github.com" />
           <option name="userName" value="victorsantiago1708@gmail.com" />
         </UrlAndUserName>
+        <UrlAndUserName>
+          <option name="url" value="https://victorsantiago1708@bitbucket.org/harpiarzap/remediozapweb.git" />
+          <option name="userName" value="" />
+        </UrlAndUserName>
       </list>
     </option>
+    <option name="cloneParentDir" value="C:\xampp\htdocs" />
   </component>
 </application>
