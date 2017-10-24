@@ -3,6 +3,7 @@
     <extensionMap>
       <mapping ext="bas" type="Native" />
       <mapping pattern="documentação" type="PLAIN_TEXT" />
+      <mapping ext="frx" type="PLAIN_TEXT" />
     </extensionMap>
   </component>
 </application>
